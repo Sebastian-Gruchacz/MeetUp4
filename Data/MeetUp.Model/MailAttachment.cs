@@ -1,8 +1,8 @@
-﻿namespace OrderService
+﻿namespace MeetUp.Model
 {
     using System;
 
-    internal class MailAttachment
+    public class MailAttachment
     {
         public Guid MessageId { get; set; }
         public string FileName { get; set; }

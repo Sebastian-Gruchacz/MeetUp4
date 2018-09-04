@@ -49,11 +49,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MigrationExtensions.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MeetUp.Enumerations\MeetUp.Enumerations.csproj">
+      <Project>{d5600334-8bbe-4d27-a0d3-f63914a04ce4}</Project>
+      <Name>MeetUp.Enumerations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MeetUp.Model\MeetUp.Model.csproj">
+      <Project>{3629ac4c-caa7-4ba2-a839-2fd28f1ff2e4}</Project>
+      <Name>MeetUp.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

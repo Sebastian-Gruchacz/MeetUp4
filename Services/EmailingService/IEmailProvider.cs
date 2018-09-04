@@ -1,5 +1,7 @@
-﻿namespace OrderService
+﻿namespace EmailingService
 {
+    using OrderService;
+
     public interface IEmailProvider
     {
         EmailProvider.EmailType GetTemplateType(string resource, string culture, int? myChannel = null);

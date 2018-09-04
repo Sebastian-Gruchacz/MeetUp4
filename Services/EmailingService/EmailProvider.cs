@@ -1,12 +1,10 @@
-﻿namespace OrderService
+﻿namespace EmailingService
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.IO;
 
     using Mandrill;
-    using Mandrill.Models;
 
     using NLog;
 
@@ -31,12 +29,12 @@
 
         public EmailProvider(string channelId) : this()
         {
-            _channelId = Convert.ToInt32(channelId);
+            this._channelId = Convert.ToInt32(channelId);
         }
 
         public void SetChannelId(int channelId)
         {
-            _channelId = channelId;
+            this._channelId = channelId;
         }
 
         public TemplateInfo GetTemplateInfo(string slugId)
@@ -44,6 +42,7 @@
             var template = _api.TemplateInfo(slugId);
             if (template != null)
                 return template;
+
             return null;
         }
 
@@ -74,10 +73,10 @@
 
                 toEmailAddresses.Add(toEmailAddress);
 
-                if (payload.TryGetValue("cc", out _ccAddress))
+                if (payload.TryGetValue("cc", out this._ccAddress))
                 {
                     EmailAddress ccEmailAddress = new EmailAddress();
-                    ccEmailAddress.email = _ccAddress;
+                    ccEmailAddress.email = this._ccAddress;
                     ccEmailAddress.type = "cc";
 
                     toEmailAddresses.Add(ccEmailAddress);
@@ -93,26 +92,26 @@
                     emailMessage.AddGlobalVariable(templateContent.Key, templateContent.Value);
                 }
 
-                if (payload.TryGetValue("from", out _fromAddress))
+                if (payload.TryGetValue("from", out this._fromAddress))
                 {
-                    emailMessage.from_email = _fromAddress;
+                    emailMessage.from_email = this._fromAddress;
                 }
-                if (payload.TryGetValue("from_name", out _displayName))
+                if (payload.TryGetValue("from_name", out this._displayName))
                 {
-                    emailMessage.from_name = _displayName;
+                    emailMessage.from_name = this._displayName;
                 }
-                if (payload.TryGetValue("subject", out _subject))
+                if (payload.TryGetValue("subject", out this._subject))
                 {
-                    emailMessage.subject = _subject;
+                    emailMessage.subject = this._subject;
                 }
 
-                if (payload.TryGetValue("attachment", out _attachment))
+                if (payload.TryGetValue("attachment", out this._attachment))
                 {
                     emailMessage.attachments = new List<email_attachment>();
                     email_attachment mailAttachment = new email_attachment();
-                    if (_attachment != null)
+                    if (this._attachment != null)
                     {
-                        mailAttachment.content = _attachment;
+                        mailAttachment.content = this._attachment;
                         mailAttachment.name = "File.txt";
                         mailAttachment.type = "text/txt";
                         ((List<email_attachment>)emailMessage.attachments).Add(mailAttachment);
@@ -156,10 +155,10 @@
 
                 toEmailAddresses.Add(toEmailAddress);
 
-                if (payload.TryGetValue("cc", out _ccAddress))
+                if (payload.TryGetValue("cc", out this._ccAddress))
                 {
                     EmailAddress ccEmailAddress = new EmailAddress();
-                    ccEmailAddress.email = _ccAddress;
+                    ccEmailAddress.email = this._ccAddress;
                     ccEmailAddress.type = "cc";
 
                     toEmailAddresses.Add(ccEmailAddress);
@@ -175,17 +174,17 @@
                     emailMessage.AddGlobalVariable(templateContent.Key, templateContent.Value);
                 }
 
-                if (payload.TryGetValue("from", out _fromAddress))
+                if (payload.TryGetValue("from", out this._fromAddress))
                 {
-                    emailMessage.from_email = _fromAddress;
+                    emailMessage.from_email = this._fromAddress;
                 }
-                if (payload.TryGetValue("from_name", out _displayName))
+                if (payload.TryGetValue("from_name", out this._displayName))
                 {
-                    emailMessage.from_name = _displayName;
+                    emailMessage.from_name = this._displayName;
                 }
-                if (payload.TryGetValue("subject", out _subject))
+                if (payload.TryGetValue("subject", out this._subject))
                 {
-                    emailMessage.subject = _subject;
+                    emailMessage.subject = this._subject;
                 }
 
                 if (attachmentList != null && attachmentList.Count > 0)
@@ -227,10 +226,10 @@
 
                 toEmailAddresses.Add(toEmailAddress);
 
-                if (payload.TryGetValue("cc", out _ccAddress))
+                if (payload.TryGetValue("cc", out this._ccAddress))
                 {
                     EmailAddress ccEmailAddress = new EmailAddress();
-                    ccEmailAddress.email = _ccAddress;
+                    ccEmailAddress.email = this._ccAddress;
                     ccEmailAddress.type = "cc";
 
                     toEmailAddresses.Add(ccEmailAddress);
@@ -246,27 +245,27 @@
                     emailMessage.AddGlobalVariable(templateContent.Key, templateContent.Value);
                 }
 
-                if (payload.TryGetValue("from", out _fromAddress))
+                if (payload.TryGetValue("from", out this._fromAddress))
                 {
-                    emailMessage.from_email = _fromAddress;
+                    emailMessage.from_email = this._fromAddress;
                 }
-                if (payload.TryGetValue("from_name", out _displayName))
+                if (payload.TryGetValue("from_name", out this._displayName))
                 {
-                    emailMessage.from_name = _displayName;
+                    emailMessage.from_name = this._displayName;
                 }
-                if (payload.TryGetValue("subject", out _subject))
+                if (payload.TryGetValue("subject", out this._subject))
                 {
-                    emailMessage.subject = _subject;
+                    emailMessage.subject = this._subject;
                 }
 
-                if (payload.TryGetValue("attachment", out _attachment))
+                if (payload.TryGetValue("attachment", out this._attachment))
                 {
                     //AttachmentCollection
                     emailMessage.attachments = new List<email_attachment>();
                     email_attachment mailAttachment = new email_attachment();
-                    if (_attachment != null)
+                    if (this._attachment != null)
                     {
-                        mailAttachment.content = _attachment;
+                        mailAttachment.content = this._attachment;
                         mailAttachment.name = "File.txt";
                         mailAttachment.type = "text/txt";
                         ((List<email_attachment>)emailMessage.attachments).Add(mailAttachment);
@@ -276,7 +275,7 @@
                 //emailMessage.from_email = "info@justtcustomer.com";
                 //emailMessage.subject = "Test";
 
-                List<EmailResult> results = _api.SendMessage(emailMessage, GetTemplateName(emailType), null);
+                List<EmailResult> results = _api.SendMessage(emailMessage, this.GetTemplateName(emailType), null);
 
                 if (results.Count > 0)
                 {
@@ -303,6 +302,7 @@
         }
 
         #region send with Attachment
+
         public bool Send(string targetEmail, Dictionary<string, string> payload, EmailType emailType, byte[] byteArray)
         {
             List<EmailAddress> toEmailAddresses = new List<EmailAddress>();
@@ -313,10 +313,10 @@
 
             toEmailAddresses.Add(toEmailAddress);
 
-            if (payload.TryGetValue("cc", out _ccAddress))
+            if (payload.TryGetValue("cc", out this._ccAddress))
             {
                 EmailAddress ccEmailAddress = new EmailAddress();
-                ccEmailAddress.email = _ccAddress;
+                ccEmailAddress.email = this._ccAddress;
                 ccEmailAddress.type = "cc";
 
                 toEmailAddresses.Add(ccEmailAddress);
@@ -324,9 +324,9 @@
 
             EmailMessage emailMessage = new EmailMessage();
             emailMessage.to = toEmailAddresses;
-            if (payload.TryGetValue("subject", out _subject))
+            if (payload.TryGetValue("subject", out this._subject))
             {
-                emailMessage.subject = _subject;
+                emailMessage.subject = this._subject;
             }
             emailMessage.attachments = new List<email_attachment>();
             email_attachment mailAttachment = new email_attachment();
@@ -344,7 +344,7 @@
 
             //  emailMessage.from_email = FromAddress;
             //  emailMessage.subject = "Test";
-            List<EmailResult> results = _api.SendMessage(emailMessage, GetTemplateName(emailType), null);
+            List<EmailResult> results = _api.SendMessage(emailMessage, this.GetTemplateName(emailType), null);
 
 
             if (results.Count > 0)
@@ -360,7 +360,8 @@
 
             return false;
         }
-        public bool Send(string targetEmail, Dictionary<string, string> payload, EmailType emailType, List<email_attachment> attachmentList)
+
+        public bool Send(string targetEmail, Dictionary<string, string> payload, EmailType emailType, List<email_attachment> attachmentList = null)
         {
             try
             {
@@ -372,10 +373,10 @@
 
                 toEmailAddresses.Add(toEmailAddress);
 
-                if (payload.TryGetValue("cc", out _ccAddress))
+                if (payload.TryGetValue("cc", out this._ccAddress))
                 {
                     EmailAddress ccEmailAddress = new EmailAddress();
-                    ccEmailAddress.email = _ccAddress;
+                    ccEmailAddress.email = this._ccAddress;
                     ccEmailAddress.type = "cc";
 
                     toEmailAddresses.Add(ccEmailAddress);
@@ -391,17 +392,17 @@
                     emailMessage.AddGlobalVariable(templateContent.Key, templateContent.Value);
                 }
 
-                if (payload.TryGetValue("from", out _fromAddress))
+                if (payload.TryGetValue("from", out this._fromAddress))
                 {
-                    emailMessage.from_email = _fromAddress;
+                    emailMessage.from_email = this._fromAddress;
                 }
-                if (payload.TryGetValue("from_name", out _displayName))
+                if (payload.TryGetValue("from_name", out this._displayName))
                 {
-                    emailMessage.from_name = _displayName;
+                    emailMessage.from_name = this._displayName;
                 }
-                if (payload.TryGetValue("subject", out _subject))
+                if (payload.TryGetValue("subject", out this._subject))
                 {
-                    emailMessage.subject = _subject;
+                    emailMessage.subject = this._subject;
                 }
 
                 if (attachmentList != null && attachmentList.Count > 0)
@@ -412,7 +413,7 @@
                 //emailMessage.from_email = "info@justtcustomer.com";
                 //emailMessage.subject = "Test";
 
-                List<EmailResult> results = _api.SendMessage(emailMessage, GetTemplateName(emailType), null);
+                List<EmailResult> results = _api.SendMessage(emailMessage, this.GetTemplateName(emailType), null);
 
 
                 if (results.Count > 0)
@@ -728,12 +729,12 @@
         public EmailType GetTemplateType(string resource, string culture, int? myChannel = null)
         {
             if (myChannel != null)
-                _channelId = (int)myChannel;
+                this._channelId = (int)myChannel;
             switch (resource)
             {
                 #region Confirm
                 case "Confirm":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -757,7 +758,7 @@
 
                 #region Reset
                 case "Reset":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -781,7 +782,7 @@
 
                 #region NewAssignUser
                 case "NewAssignUser":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -805,7 +806,7 @@
 
                 #region CustomerOrder
                 case "CustomerOrder":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -829,7 +830,7 @@
 
                 #region ArvatoAccount
                 case "ArvatoAccount":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -853,7 +854,7 @@
 
                 #region NewCompany
                 case "NewCompany":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -877,7 +878,7 @@
 
                 #region SupplierLoginRequest
                 case "SupplierLoginRequest":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -901,7 +902,7 @@
 
                 #region UserEmail
                 case "UserEmailCommunication":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -925,7 +926,7 @@
 
                 #region OfferRequestOrder
                 case "OfferRequestOrder":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -949,7 +950,7 @@
 
                 #region InviteUserInCompany
                 case "InviteUserInCompany":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -973,7 +974,7 @@
 
                 #region InviteUserInPlatform
                 case "InviteUserInPlatform":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -997,7 +998,7 @@
 
                 #region InviteUserInPlatform
                 case "UpdateUserInCompany":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -1021,7 +1022,7 @@
 
                 #region BonusLines
                 case "BonusLines":
-                    switch (_channelId)
+                    switch (this._channelId)
                     {
                         case 1:
                             switch (culture)
@@ -1061,4 +1062,6 @@
         }
         #endregion
     }
+
+    
 }

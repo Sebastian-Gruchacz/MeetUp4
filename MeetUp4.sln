@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingHelpers", "Common\Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetUp.Enumerations", "Data\MeetUp.Enumerations\MeetUp.Enumerations.csproj", "{D5600334-8BBE-4D27-A0D3-F63914A04CE4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetUp.Common", "MeetUp.Common\MeetUp.Common.csproj", "{32FFF58E-3660-409C-99C8-D40EE69ED61D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{0B536609-B2FA-4A26-91CA-49594591DC22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +59,10 @@ Global
 		{D5600334-8BBE-4D27-A0D3-F63914A04CE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5600334-8BBE-4D27-A0D3-F63914A04CE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5600334-8BBE-4D27-A0D3-F63914A04CE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32FFF58E-3660-409C-99C8-D40EE69ED61D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32FFF58E-3660-409C-99C8-D40EE69ED61D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32FFF58E-3660-409C-99C8-D40EE69ED61D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32FFF58E-3660-409C-99C8-D40EE69ED61D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
