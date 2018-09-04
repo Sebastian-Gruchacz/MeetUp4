@@ -16,14 +16,21 @@
         [Key]
         public int Id { get; set; }
 
-        public int NoOfEmployee { get; set; }
-
         [StringLength(150)]
         [Required]
         [Index("UIX_CustomerName", 1, IsUnique = true)]
         public string CustomerName { get; set; }
 
         public int ChannelId { get; set; }
+
+        public int NoOfEmployee { get; set; }
+
+        /// <summary>
+        /// This is internal email that is used to extract direct emails from catch-all in-box.
+        /// </summary>
+        [StringLength(250)]
+        [Index("UIX_InternaEmail", 1, IsUnique = true)]
+        public string InternalEmail { get; set; }
 
         public virtual ICollection<UserCustomerRole> UserRolesInCustomers { get; set; }
     }

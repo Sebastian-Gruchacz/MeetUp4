@@ -147,16 +147,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomerOrder.cs" />
-    <Compile Include="EmailProvider.cs" />
     <Compile Include="ICustomerOrder.cs" />
     <Compile Include="ICustomerOrderService.cs" />
-    <Compile Include="IEmailProvider.cs" />
-    <Compile Include="IFileStore.cs" />
-    <Compile Include="IMailAttachmentService.cs" />
-    <Compile Include="IMailMessageService.cs" />
     <Compile Include="IOrderFormService.cs" />
     <Compile Include="ISupplierService.cs" />
-    <Compile Include="MailMessageResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +169,10 @@
     <ProjectReference Include="..\MeetUp.Common\MeetUp.Common.csproj">
       <Project>{32FFF58E-3660-409C-99C8-D40EE69ED61D}</Project>
       <Name>MeetUp.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\EmailingService\EmailingService.csproj">
+      <Project>{750BC88C-0B10-4E27-80CD-A46FB25E3265}</Project>
+      <Name>EmailingService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

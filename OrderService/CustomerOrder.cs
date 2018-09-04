@@ -6,6 +6,9 @@
     using System.IO;
     using System.Linq;
     using System.Xml;
+
+    using EmailingService;
+
     using HtmlAgilityPack;
 
     using Mandrill;
@@ -125,7 +128,7 @@
 
                             //Creating Child Node of the Key
                             XmlElement childKey = xmlDoc.CreateElement("Key");
-                            //childKey.Attributes.Append(xmlDoc.CreateAttribute("name", "justtTid"));
+                            //childKey.Attributes.Append(xmlDoc.CreateAttribute("name", "trackTid"));
                             childKey.InnerText = "TrackingLeadId";
 
                             fieldNode.AppendChild(childKey);
@@ -158,7 +161,7 @@
                             {
                                 if (node.InnerText.Contains(response.TrackingLeadId.ToString()))
                                 {
-                                    node.Attributes.Append("name", "justtTid");
+                                    node.Attributes.Append("name", "trackTid");
                                 }
                             }
 
@@ -174,7 +177,7 @@
                             string recipientEmail = (string.IsNullOrEmpty(customerOrder.OrderEmail) ? supplier.SupplierOrderPolicies.ToList()[0].OrderEmailAddress : customerOrder.OrderEmail);
                             ////get email attachments
 
-                            MailMessageResponse message = SaveMailMessage(user.Id, supplier.Name, emailSubject, emailHtmlBody, user.JusttEmail, recipientEmail, response.TrackingLeadId, customerOrder.FromCustomerId, customerOrder.FromDepartmentId);
+                            MailMessageResponse message = SaveMailMessage(user.Id, supplier.Name, emailSubject, emailHtmlBody, user.InternalEmail, recipientEmail, response.TrackingLeadId, customerOrder.FromCustomerId, customerOrder.FromDepartmentId);
                             if (customerOrder.CustomerOrderAttachments.Count > 0)
                             {
                                 SaveCustomerAttachmentsInMailMessage(customerOrder.CustomerOrderAttachments, message.MessageId);
@@ -188,7 +191,7 @@
                         }
                         else
                         {
-                            MailMessageResponse message = SaveMailMessage(user.Id, supplier.Name, emailSubject, emailHtmlBody, user.JusttEmail, supplier.InternalSupportEmailForSpecialSituations, response.TrackingLeadId, customerOrder.FromCustomerId, customerOrder.FromDepartmentId);
+                            MailMessageResponse message = SaveMailMessage(user.Id, supplier.Name, emailSubject, emailHtmlBody, user.InternalEmail, supplier.InternalSupportEmailForSpecialSituations, response.TrackingLeadId, customerOrder.FromCustomerId, customerOrder.FromDepartmentId);
                             if (customerOrder.CustomerOrderAttachments.Count > 0)
                             {
                                 SaveCustomerAttachmentsInMailMessage(customerOrder.CustomerOrderAttachments, message.MessageId);

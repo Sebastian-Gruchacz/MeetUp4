@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Channel.cs" />
     <Compile Include="MessageKind.cs" />
     <Compile Include="MessageStatus.cs" />
     <Compile Include="MessageType.cs" />

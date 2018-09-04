@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.IO;
 
     using Mandrill;
+    using Mandrill.Models;
 
     using NLog;
 
@@ -272,7 +274,7 @@
                     }
                 }
 
-                //emailMessage.from_email = "info@justtcustomer.com";
+                //emailMessage.from_email = "info@customer.com";
                 //emailMessage.subject = "Test";
 
                 List<EmailResult> results = _api.SendMessage(emailMessage, this.GetTemplateName(emailType), null);
@@ -410,7 +412,7 @@
                     emailMessage.attachments = attachmentList;
                 }
 
-                //emailMessage.from_email = "info@justtcustomer.com";
+                //emailMessage.from_email = "info@customer.com";
                 //emailMessage.subject = "Test";
 
                 List<EmailResult> results = _api.SendMessage(emailMessage, this.GetTemplateName(emailType), null);
@@ -439,93 +441,88 @@
 
         public enum EmailType
         {
-            #region JUSTT
+            #region ChannelOne
 
-            JusttConfirmEn,
-            JusttResetPasswordEn,
-            JusttConfirmCategoryPersonEn,
-            JusttConfirmExistingCategoryPersonEn,
-            JusttAdminOfNewCompanyEn,
-            JusttCustomerOrderEmailEn,
-            JusttArvatoAccountRequiredEn,
-            JusttUserEmailEn,
-            JusttSupplierLoginRequestEn,
-            JusttNewActityEn,
-            JusttNewMessageEn,
-            JusttAssignNewAdminEn,
-            JusttAssignExistingAdminEn,
-            JusttOfferRequestOrderEn,
-            JusttOfferRequestOrderDa,
-            JusttConfirmDa,
-            JusttResetPasswordDa,
-            JusttConfirmCategoryPersonDa,
-            JusttConfirmExistingCategoryPersonDa,
-            JusttAdminOfNewCompanyDa,
-            JusttCustomerOrderEmailDa,
-            JusttArvatoAccountRequiredDa,
-            JusttUserEmailDa,
-            JusttSupplierLoginRequestDa,
-            JusttLoginRequestToAdmin,
-            JusttNewActityDa,
-            JusttNewMessageDa,
-            JusttAssignNewAdminDa,
-            JusttAssignExistingAdminDa,
-            JusttMessageForward,
-            JusttInviteUserInCompanyEn,
-            JusttInviteUserInCompanyDa,
-            JusttInviteUserInPlatformEn,
-            JusttInviteUserInPlatformDa,
-            JusttBonusLinesDa,
-            JusttUpdateUserInCompnayEn,
-            JusttUpdateUserInCompanyDa,
-            JusttAdminInvitesUsersEn,
-            JusttAdminInvitesUsersDa,
-            JusttAdminNoInvitesUsersEn,
-            JusttAdminNoInvitesUsersDa,
-            #endregion
-
-            #region DI
-
-            DIConfirmEN,
-            DIResetPasswordEN,
-            DIConfirmCategoryPersonEN,
-            DIConfirmExistingCategoryPersonEN,
-            DIAdminOfNewCompanyEN,
-            DICustomerOrderEmailEN,
-            DICustomerOrderedEmailEN,
-            DIArvatoAccountRequiredEN,
-            DIUserEmailEN,
-            DISupplierLoginRequestEN,
-            DINewActityEN,
-            DINewMessageEN,
-            DIAssignNewAdminEN,
-            DIAssignExistingAdminEN,
-            DIOfferRequestOrderEN,
-            DIOfferRequestOrderDA,
-            DIConfirmDA,
-            DIResetPasswordDA,
-            DIConfirmCategoryPersonDA,
-            DIConfirmExistingCategoryPersonDA,
-            DIAdminOfNewCompanyDA,
-            DICustomerOrderEmailDA,
-            DIArvatoAccountRequiredDA,
-            DIUserEmailDA,
-            DISupplierLoginRequestDA,
-            DINewActityDA,
-            DINewMessageDA,
-            DIAssignNewAdminDA,
-            DIAssignExistingAdminDA,
-            DIMessageForward,
-            DIInviteUserInCompanyEN,
-            DIInviteUserInCompanyDA,
-            DIInviteUserInPlatformEN,
-            DIInviteUserInPlatformDA,
-            DIBonusLinesDA,
-            DITermination,
+            ChannelOneConfirmEn,
+            ChannelOneResetPasswordEn,
+            ChannelOneConfirmCategoryPersonEn,
+            ChannelOneConfirmExistingCategoryPersonEn,
+            ChannelOneAdminOfNewCompanyEn,
+            ChannelOneCustomerOrderEmailEn,
+            ChannelOneUserEmailEn,
+            ChannelOneSupplierLoginRequestEn,
+            ChannelOneNewActityEn,
+            ChannelOneNewMessageEn,
+            ChannelOneAssignNewAdminEn,
+            ChannelOneAssignExistingAdminEn,
+            ChannelOneOfferRequestOrderEn,
+            ChannelOneOfferRequestOrderDa,
+            ChannelOneConfirmDa,
+            ChannelOneResetPasswordDa,
+            ChannelOneConfirmCategoryPersonDa,
+            ChannelOneConfirmExistingCategoryPersonDa,
+            ChannelOneAdminOfNewCompanyDa,
+            ChannelOneCustomerOrderEmailDa,
+            ChannelOneUserEmailDa,
+            ChannelOneSupplierLoginRequestDa,
+            ChannelOneLoginRequestToAdmin,
+            ChannelOneNewActityDa,
+            ChannelOneNewMessageDa,
+            ChannelOneAssignNewAdminDa,
+            ChannelOneAssignExistingAdminDa,
+            ChannelOneMessageForward,
+            ChannelOneInviteUserInCompanyEn,
+            ChannelOneInviteUserInCompanyDa,
+            ChannelOneInviteUserInPlatformEn,
+            ChannelOneInviteUserInPlatformDa,
+            ChannelOneBonusLinesDa,
+            ChannelOneUpdateUserInCompnayEn,
+            ChannelOneUpdateUserInCompanyDa,
+            ChannelOneAdminInvitesUsersEn,
+            ChannelOneAdminInvitesUsersDa,
+            ChannelOneAdminNoInvitesUsersEn,
+            ChannelOneAdminNoInvitesUsersDa,
 
             #endregion
 
-            ArvatoPaymentLinks
+            #region ChannelTwo
+
+            ChannelTwoConfirmEN,
+            ChannelTwoResetPasswordEN,
+            ChannelTwoConfirmCategoryPersonEN,
+            ChannelTwoConfirmExistingCategoryPersonEN,
+            ChannelTwoAdminOfNewCompanyEN,
+            ChannelTwoCustomerOrderEmailEN,
+            ChannelTwoCustomerOrderedEmailEN,
+            ChannelTwoUserEmailEN,
+            ChannelTwoSupplierLoginRequestEN,
+            ChannelTwoNewActityEN,
+            ChannelTwoNewMessageEN,
+            ChannelTwoAssignNewAdminEN,
+            ChannelTwoAssignExistingAdminEN,
+            ChannelTwoOfferRequestOrderEN,
+            ChannelTwoOfferRequestOrderDA,
+            ChannelTwoConfirmDA,
+            ChannelTwoResetPasswordDA,
+            ChannelTwoConfirmCategoryPersonDA,
+            ChannelTwoConfirmExistingCategoryPersonDA,
+            ChannelTwoAdminOfNewCompanyDA,
+            ChannelTwoCustomerOrderEmailDA,
+            ChannelTwoUserEmailDA,
+            ChannelTwoSupplierLoginRequestDA,
+            ChannelTwoNewActityDA,
+            ChannelTwoNewMessageDA,
+            ChannelTwoAssignNewAdminDA,
+            ChannelTwoAssignExistingAdminDA,
+            ChannelTwoMessageForward,
+            ChannelTwoInviteUserInCompanyEN,
+            ChannelTwoInviteUserInCompanyDA,
+            ChannelTwoInviteUserInPlatformEN,
+            ChannelTwoInviteUserInPlatformDA,
+            ChannelTwoBonusLinesDA,
+            ChannelTwoTermination,
+
+            #endregion
         }
 
         #endregion
@@ -536,193 +533,178 @@
         {
             switch (emailType)
             {
-                #region JUSTT
+                #region ChannelOne
 
-                case EmailType.JusttBonusLinesDa:
-                    return "justt-bonus-payout-mail-with-settlement";
-                case EmailType.JusttConfirmEn:
-                    return "justt-welcome-user-en";
-                case EmailType.JusttConfirmDa:
-                    return "justt-welcome-user-da-new";
+                case EmailType.ChannelOneBonusLinesDa:
+                    return "ChannelOne-bonus-payout-mail-with-settlement";
+                case EmailType.ChannelOneConfirmEn:
+                    return "ChannelOne-welcome-user-en";
+                case EmailType.ChannelOneConfirmDa:
+                    return "ChannelOne-welcome-user-da-new";
 
-                case EmailType.JusttResetPasswordEn:
-                    return "justt-forgot-password-en";
-                case EmailType.JusttResetPasswordDa:
-                    return "justt-forgot-password-da-new";
+                case EmailType.ChannelOneResetPasswordEn:
+                    return "ChannelOne-forgot-password-en";
+                case EmailType.ChannelOneResetPasswordDa:
+                    return "ChannelOne-forgot-password-da-new";
 
-                case EmailType.JusttAdminOfNewCompanyEn:
-                    return "justt-admin-of-new-company-en";
-                case EmailType.JusttAdminOfNewCompanyDa:
-                    return "justt-admin-of-new-company-da-new";
+                case EmailType.ChannelOneAdminOfNewCompanyEn:
+                    return "ChannelOne-admin-of-new-company-en";
+                case EmailType.ChannelOneAdminOfNewCompanyDa:
+                    return "ChannelOne-admin-of-new-company-da-new";
 
-                case EmailType.JusttAssignNewAdminEn:
-                    return "justt-assign-admin-notification-new-user-en";
-                case EmailType.JusttAssignNewAdminDa:
-                    return "justt-assign-admin-notification-new-user-da";
+                case EmailType.ChannelOneAssignNewAdminEn:
+                    return "ChannelOne-assign-admin-notification-new-user-en";
+                case EmailType.ChannelOneAssignNewAdminDa:
+                    return "ChannelOne-assign-admin-notification-new-user-da";
 
-                case EmailType.JusttAssignExistingAdminEn:
-                    return "justt-assign-admin-notification-existing-user-en";
-                case EmailType.JusttAssignExistingAdminDa:
-                    return "justt-assign-admin-notification-existing-user-da";
+                case EmailType.ChannelOneAssignExistingAdminEn:
+                    return "ChannelOne-assign-admin-notification-existing-user-en";
+                case EmailType.ChannelOneAssignExistingAdminDa:
+                    return "ChannelOne-assign-admin-notification-existing-user-da";
 
-                case EmailType.JusttConfirmCategoryPersonEn:
-                    return "justt-assign-person-notification-new-user-en";
-                case EmailType.JusttConfirmCategoryPersonDa:
-                    return "justt-assign-person-notification-new-user-da";
+                case EmailType.ChannelOneConfirmCategoryPersonEn:
+                    return "ChannelOne-assign-person-notification-new-user-en";
+                case EmailType.ChannelOneConfirmCategoryPersonDa:
+                    return "ChannelOne-assign-person-notification-new-user-da";
 
-                case EmailType.JusttConfirmExistingCategoryPersonEn:
-                    return "justt-assign-person-notification-existing-user-en";
-                case EmailType.JusttConfirmExistingCategoryPersonDa:
-                    return "justt-assign-person-notification-existing-user-da";
+                case EmailType.ChannelOneConfirmExistingCategoryPersonEn:
+                    return "ChannelOne-assign-person-notification-existing-user-en";
+                case EmailType.ChannelOneConfirmExistingCategoryPersonDa:
+                    return "ChannelOne-assign-person-notification-existing-user-da";
 
-                case EmailType.JusttCustomerOrderEmailEn:
-                    return "justt-customer-order-en";
-                case EmailType.JusttCustomerOrderEmailDa:
-                    return "justt-customer-order-da";
+                case EmailType.ChannelOneCustomerOrderEmailEn:
+                    return "ChannelOne-customer-order-en";
+                case EmailType.ChannelOneCustomerOrderEmailDa:
+                    return "ChannelOne-customer-order-da";
 
-                case EmailType.JusttArvatoAccountRequiredEn:
-                    return "justt-supplier-activation-en";
-                case EmailType.JusttArvatoAccountRequiredDa:
-                    return "justt-supplier-activation-en";
+                case EmailType.ChannelOneUserEmailEn:
+                    return "ChannelOne-simple-message-en";
+                case EmailType.ChannelOneUserEmailDa:
+                    return "ChannelOne-simple-message-en";
 
-                case EmailType.JusttUserEmailEn:
-                    return "justt-simple-message-en";
-                case EmailType.JusttUserEmailDa:
-                    return "justt-simple-message-en";
+                case EmailType.ChannelOneNewActityEn:
+                    return "ChannelOne-new-activity-en";
+                case EmailType.ChannelOneNewActityDa:
+                    return "ChannelOne-new-activity-da";
 
-                case EmailType.JusttNewActityEn:
-                    return "justt-new-activity-en";
-                case EmailType.JusttNewActityDa:
-                    return "justt-new-activity-da";
+                case EmailType.ChannelOneNewMessageEn:
+                    return "ChannelOne-new-message-en";
+                case EmailType.ChannelOneNewMessageDa:
+                    return "ChannelOne-new-message-da-new";
 
-                case EmailType.JusttNewMessageEn:
-                    return "justt-new-message-en";
-                case EmailType.JusttNewMessageDa:
-                    return "justt-new-message-da-new";
+                case EmailType.ChannelOneSupplierLoginRequestEn:
+                    return "ChannelOne-supplier-activation-en";
+                case EmailType.ChannelOneSupplierLoginRequestDa:
+                    return "ChannelOne-supplier-activation-da";
 
-                case EmailType.JusttSupplierLoginRequestEn:
-                    return "justt-supplier-activation-en";
-                case EmailType.JusttSupplierLoginRequestDa:
-                    return "justt-supplier-activation-da";
+                case EmailType.ChannelOneOfferRequestOrderEn:
+                    return "ChannelOne-offer-request-or-order-placed-en-v2";
+                case EmailType.ChannelOneOfferRequestOrderDa:
+                    return "ChannelOne-offer-request-or-order-placed-da-v2-new";
 
-                case EmailType.JusttOfferRequestOrderEn:
-                    return "justt-offer-request-or-order-placed-en-v2";
-                case EmailType.JusttOfferRequestOrderDa:
-                    return "justt-offer-request-or-order-placed-da-v2-new";
+                case EmailType.ChannelOneLoginRequestToAdmin:
+                    return "ChannelOne-login-request-to-admin";
 
-                case EmailType.JusttLoginRequestToAdmin:
-                    return "justt-login-request-to-admin";
+                case EmailType.ChannelOneMessageForward:
+                    return "ChannelOne-message-forward";
 
-                case EmailType.JusttMessageForward:
-                    return "justt-message-forward";
+                case EmailType.ChannelOneInviteUserInCompanyEn:
+                case EmailType.ChannelOneInviteUserInCompanyDa:
+                    return "ChannelOne-invite-admin-dk-new";
 
-                //case EmailType.JusttInviteUserInCompanyEN:
-                //    return "justt-invite-admin-uk";
+                case EmailType.ChannelOneInviteUserInPlatformEn:
+                case EmailType.ChannelOneInviteUserInPlatformDa:
+                    return "ChannelOne-invite-new-user-da-new";
+                case EmailType.ChannelOneUpdateUserInCompanyDa:
+                case EmailType.ChannelOneUpdateUserInCompnayEn:
+                    return "ChannelOne-invite-admin-dk-new";
 
-                case EmailType.JusttInviteUserInCompanyEn:
-                case EmailType.JusttInviteUserInCompanyDa:
-                    return "justt-invite-admin-dk-new";
+                case EmailType.ChannelOneAdminNoInvitesUsersEn:
+                case EmailType.ChannelOneAdminNoInvitesUsersDa:
+                    return "ChannelOne-welcome-user-no-invites-new";
 
-                //case EmailType.JusttInviteUserInPlatformEN:
-                //    return "justt-invite-new-user-en";
-
-                case EmailType.JusttInviteUserInPlatformEn:
-                case EmailType.JusttInviteUserInPlatformDa:
-                    return "justt-invite-new-user-da-new";
-                case EmailType.JusttUpdateUserInCompanyDa:
-                case EmailType.JusttUpdateUserInCompnayEn:
-                    return "justt-invite-admin-dk-new";
-
-                case EmailType.JusttAdminNoInvitesUsersEn:
-                case EmailType.JusttAdminNoInvitesUsersDa:
-                    return "justt-welcome-user-no-invites-new";
-
-                case EmailType.JusttAdminInvitesUsersEn:
-                case EmailType.JusttAdminInvitesUsersDa:
-                    return "justt-welcome-user-invites-new";
+                case EmailType.ChannelOneAdminInvitesUsersEn:
+                case EmailType.ChannelOneAdminInvitesUsersDa:
+                    return "ChannelOne-welcome-user-invites-new";
 
                 #endregion
 
-                #region DI
-                case EmailType.DITermination:
-                    return "di-termination-mail-bonus";
+                #region ChannelTwo
+                case EmailType.ChannelTwoTermination:
+                    return "ChannelTwo-termination-mail-bonus";
 
-                case EmailType.DIBonusLinesDA:
-                    return "di-bonus-payout-mail-with-settlement";
+                case EmailType.ChannelTwoBonusLinesDA:
+                    return "ChannelTwo-bonus-payout-mail-with-settlement";
 
-                case EmailType.DIConfirmDA:
-                case EmailType.DIConfirmEN:
-                    return "di-welcome-user-da";
+                case EmailType.ChannelTwoConfirmDA:
+                case EmailType.ChannelTwoConfirmEN:
+                    return "ChannelTwo-welcome-user-da";
 
-                case EmailType.DIResetPasswordDA:
-                case EmailType.DIResetPasswordEN:
-                    return "di-forgot-password-da";
+                case EmailType.ChannelTwoResetPasswordDA:
+                case EmailType.ChannelTwoResetPasswordEN:
+                    return "ChannelTwo-forgot-password-da";
 
-                case EmailType.DIAdminOfNewCompanyDA:
-                case EmailType.DIAdminOfNewCompanyEN:
-                    return "di-admin-of-new-company-da";
+                case EmailType.ChannelTwoAdminOfNewCompanyDA:
+                case EmailType.ChannelTwoAdminOfNewCompanyEN:
+                    return "ChannelTwo-admin-of-new-company-da";
 
-                case EmailType.DIAssignNewAdminEN:
-                    return "di-assign-admin-notification-new-user-da";
-                case EmailType.DIAssignNewAdminDA:
-                    return "di-assign-admin-notification-new-user-da";
+                case EmailType.ChannelTwoAssignNewAdminEN:
+                    return "ChannelTwo-assign-admin-notification-new-user-da";
+                case EmailType.ChannelTwoAssignNewAdminDA:
+                    return "ChannelTwo-assign-admin-notification-new-user-da";
 
-                case EmailType.DIAssignExistingAdminEN:
-                    return "di-assign-admin-notification-existing-user-da";
-                case EmailType.DIAssignExistingAdminDA:
-                    return "di-assign-admin-notification-existing-user-da";
+                case EmailType.ChannelTwoAssignExistingAdminEN:
+                    return "ChannelTwo-assign-admin-notification-existing-user-da";
+                case EmailType.ChannelTwoAssignExistingAdminDA:
+                    return "ChannelTwo-assign-admin-notification-existing-user-da";
 
-                case EmailType.DIConfirmCategoryPersonDA:
-                case EmailType.DIConfirmCategoryPersonEN:
-                    return "di-assign-person-notification-new-user-da";
+                case EmailType.ChannelTwoConfirmCategoryPersonDA:
+                case EmailType.ChannelTwoConfirmCategoryPersonEN:
+                    return "ChannelTwo-assign-person-notification-new-user-da";
 
-                case EmailType.DIConfirmExistingCategoryPersonDA:
-                case EmailType.DIConfirmExistingCategoryPersonEN:
-                    return "di-assign-person-notification-existing-user-da";
+                case EmailType.ChannelTwoConfirmExistingCategoryPersonDA:
+                case EmailType.ChannelTwoConfirmExistingCategoryPersonEN:
+                    return "ChannelTwo-assign-person-notification-existing-user-da";
 
-                case EmailType.DICustomerOrderEmailDA:
-                case EmailType.DICustomerOrderEmailEN:
-                    return "di-customer-order-da";
+                case EmailType.ChannelTwoCustomerOrderEmailDA:
+                case EmailType.ChannelTwoCustomerOrderEmailEN:
+                    return "ChannelTwo-customer-order-da";
 
-                case EmailType.DIArvatoAccountRequiredDA:
-                case EmailType.DIArvatoAccountRequiredEN:
-                    return "di-arvato-account-customer-da";
+                case EmailType.ChannelTwoUserEmailDA:
+                case EmailType.ChannelTwoUserEmailEN:
+                    return "ChannelTwo-simple-message-da";
 
-                case EmailType.DIUserEmailDA:
-                case EmailType.DIUserEmailEN:
-                    return "di-simple-message-da";
+                case EmailType.ChannelTwoNewActityDA:
+                case EmailType.ChannelTwoNewActityEN:
+                    return "ChannelTwo-new-activity-da";
 
-                case EmailType.DINewActityDA:
-                case EmailType.DINewActityEN:
-                    return "di-new-activity-da";
+                case EmailType.ChannelTwoNewMessageEN:
+                case EmailType.ChannelTwoNewMessageDA:
+                    return "ChannelTwo-new-message-da";
 
-                case EmailType.DINewMessageEN:
-                case EmailType.DINewMessageDA:
-                    return "di-new-message-da";
+                case EmailType.ChannelTwoSupplierLoginRequestDA:
+                case EmailType.ChannelTwoSupplierLoginRequestEN:
+                    return "ChannelTwo-supplier-activation-da";
 
-                case EmailType.DISupplierLoginRequestDA:
-                case EmailType.DISupplierLoginRequestEN:
-                    return "di-supplier-activation-da";
+                case EmailType.ChannelTwoOfferRequestOrderEN:
+                case EmailType.ChannelTwoOfferRequestOrderDA:
+                    return "ChannelTwo-offer-request-or-order-placed-da-v2";
 
-                case EmailType.DIOfferRequestOrderEN:
-                case EmailType.DIOfferRequestOrderDA:
-                    return "di-offer-request-or-order-placed-da-v2";
+                case EmailType.ChannelTwoMessageForward:
+                    return "ChannelTwo-message-forward";
 
-                case EmailType.DIMessageForward:
-                    return "di-message-forward";
+                case EmailType.ChannelTwoInviteUserInCompanyEN:
+                case EmailType.ChannelTwoInviteUserInCompanyDA:
+                    return "ChannelTwo-invite-admin-da";
 
-                case EmailType.DIInviteUserInCompanyEN:
-                case EmailType.DIInviteUserInCompanyDA:
-                    return "di-invite-admin-da";
-
-                case EmailType.DIInviteUserInPlatformEN:
-                case EmailType.DIInviteUserInPlatformDA:
-                    return "di-invite-new-user-da";
+                case EmailType.ChannelTwoInviteUserInPlatformEN:
+                case EmailType.ChannelTwoInviteUserInPlatformDA:
+                    return "ChannelTwo-invite-new-user-da";
 
                 #endregion
 
                 default:
-                    return "di-simple-message-da";
+                    return "ChannelTwo-simple-message-da";
             }
         }
 
@@ -730,6 +712,7 @@
         {
             if (myChannel != null)
                 this._channelId = (int)myChannel;
+
             switch (resource)
             {
                 #region Confirm
@@ -740,17 +723,17 @@
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.JusttConfirmEn;
+                                    return EmailType.ChannelOneConfirmEn;
                                 default:
-                                    return EmailType.JusttConfirmDa;
+                                    return EmailType.ChannelOneConfirmDa;
                             }
                         case 12:
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.DIConfirmDA;
+                                    return EmailType.ChannelTwoConfirmDA;
                                 default:
-                                    return EmailType.DIConfirmDA;
+                                    return EmailType.ChannelTwoConfirmDA;
                             }
                     }
                     break;
@@ -764,17 +747,17 @@
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.JusttResetPasswordEn;
+                                    return EmailType.ChannelOneResetPasswordEn;
                                 default:
-                                    return EmailType.JusttResetPasswordDa;
+                                    return EmailType.ChannelOneResetPasswordDa;
                             }
                         case 12:
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.DIResetPasswordDA;
+                                    return EmailType.ChannelTwoResetPasswordDA;
                                 default:
-                                    return EmailType.DIResetPasswordDA;
+                                    return EmailType.ChannelTwoResetPasswordDA;
                             }
                     }
                     break;
@@ -788,17 +771,17 @@
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.JusttConfirmCategoryPersonEn;
+                                    return EmailType.ChannelOneConfirmCategoryPersonEn;
                                 default:
-                                    return EmailType.JusttConfirmCategoryPersonDa;
+                                    return EmailType.ChannelOneConfirmCategoryPersonDa;
                             }
                         case 12:
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.DIConfirmCategoryPersonDA;
+                                    return EmailType.ChannelTwoConfirmCategoryPersonDA;
                                 default:
-                                    return EmailType.DIConfirmCategoryPersonDA;
+                                    return EmailType.ChannelTwoConfirmCategoryPersonDA;
                             }
                     }
                     break;
@@ -812,45 +795,22 @@
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.JusttCustomerOrderEmailEn;
+                                    return EmailType.ChannelOneCustomerOrderEmailEn;
                                 default:
-                                    return EmailType.JusttCustomerOrderEmailDa;
+                                    return EmailType.ChannelOneCustomerOrderEmailDa;
                             }
                         case 12:
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.DICustomerOrderEmailDA;
+                                    return EmailType.ChannelTwoCustomerOrderEmailDA;
                                 default:
-                                    return EmailType.DICustomerOrderEmailDA;
+                                    return EmailType.ChannelTwoCustomerOrderEmailDA;
                             }
                     }
                     break;
                 #endregion
 
-                #region ArvatoAccount
-                case "ArvatoAccount":
-                    switch (this._channelId)
-                    {
-                        case 1:
-                            switch (culture)
-                            {
-                                case "en-US":
-                                    return EmailType.JusttArvatoAccountRequiredEn;
-                                default:
-                                    return EmailType.DIArvatoAccountRequiredDA;
-                            }
-                        case 12:
-                            switch (culture)
-                            {
-                                case "en-US":
-                                    return EmailType.DIArvatoAccountRequiredDA;
-                                default:
-                                    return EmailType.DIArvatoAccountRequiredDA;
-                            }
-                    }
-                    break;
-                #endregion
 
                 #region NewCompany
                 case "NewCompany":
@@ -860,17 +820,17 @@
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.JusttAdminOfNewCompanyEn;
+                                    return EmailType.ChannelOneAdminOfNewCompanyEn;
                                 default:
-                                    return EmailType.JusttAdminOfNewCompanyDa;
+                                    return EmailType.ChannelOneAdminOfNewCompanyDa;
                             }
                         case 12:
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.DIAdminOfNewCompanyDA;
+                                    return EmailType.ChannelTwoAdminOfNewCompanyDA;
                                 default:
-                                    return EmailType.DIAdminOfNewCompanyDA;
+                                    return EmailType.ChannelTwoAdminOfNewCompanyDA;
                             }
                     }
                     break;
@@ -884,17 +844,17 @@
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.JusttSupplierLoginRequestEn;
+                                    return EmailType.ChannelOneSupplierLoginRequestEn;
                                 default:
-                                    return EmailType.JusttSupplierLoginRequestDa;
+                                    return EmailType.ChannelOneSupplierLoginRequestDa;
                             }
                         case 12:
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.DISupplierLoginRequestDA;
+                                    return EmailType.ChannelTwoSupplierLoginRequestDA;
                                 default:
-                                    return EmailType.DISupplierLoginRequestDA;
+                                    return EmailType.ChannelTwoSupplierLoginRequestDA;
                             }
                     }
                     break;
@@ -908,17 +868,17 @@
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.JusttUserEmailEn;
+                                    return EmailType.ChannelOneUserEmailEn;
                                 default:
-                                    return EmailType.JusttUserEmailDa;
+                                    return EmailType.ChannelOneUserEmailDa;
                             }
                         case 12:
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.DIUserEmailDA;
+                                    return EmailType.ChannelTwoUserEmailDA;
                                 default:
-                                    return EmailType.DIUserEmailDA;
+                                    return EmailType.ChannelTwoUserEmailDA;
                             }
                     }
                     break;
@@ -932,17 +892,17 @@
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.JusttOfferRequestOrderEn;
+                                    return EmailType.ChannelOneOfferRequestOrderEn;
                                 default:
-                                    return EmailType.JusttOfferRequestOrderDa;
+                                    return EmailType.ChannelOneOfferRequestOrderDa;
                             }
                         case 12:
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.DIOfferRequestOrderEN;
+                                    return EmailType.ChannelTwoOfferRequestOrderEN;
                                 default:
-                                    return EmailType.DIOfferRequestOrderDA;
+                                    return EmailType.ChannelTwoOfferRequestOrderDA;
                             }
                     }
                     break;
@@ -956,17 +916,17 @@
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.JusttInviteUserInCompanyEn;
+                                    return EmailType.ChannelOneInviteUserInCompanyEn;
                                 default:
-                                    return EmailType.JusttInviteUserInCompanyDa;
+                                    return EmailType.ChannelOneInviteUserInCompanyDa;
                             }
                         case 12:
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.DIInviteUserInCompanyEN;
+                                    return EmailType.ChannelTwoInviteUserInCompanyEN;
                                 default:
-                                    return EmailType.DIInviteUserInCompanyDA;
+                                    return EmailType.ChannelTwoInviteUserInCompanyDA;
                             }
                     }
                     break;
@@ -980,17 +940,17 @@
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.JusttInviteUserInPlatformEn;
+                                    return EmailType.ChannelOneInviteUserInPlatformEn;
                                 default:
-                                    return EmailType.JusttInviteUserInPlatformDa;
+                                    return EmailType.ChannelOneInviteUserInPlatformDa;
                             }
                         case 12:
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.DIInviteUserInPlatformEN;
+                                    return EmailType.ChannelTwoInviteUserInPlatformEN;
                                 default:
-                                    return EmailType.DIInviteUserInPlatformDA;
+                                    return EmailType.ChannelTwoInviteUserInPlatformDA;
                             }
                     }
                     break;
@@ -1004,17 +964,17 @@
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.JusttUpdateUserInCompnayEn;
+                                    return EmailType.ChannelOneUpdateUserInCompnayEn;
                                 default:
-                                    return EmailType.JusttUpdateUserInCompanyDa;
+                                    return EmailType.ChannelOneUpdateUserInCompanyDa;
                             }
                         case 12:
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.DIInviteUserInCompanyEN;
+                                    return EmailType.ChannelTwoInviteUserInCompanyEN;
                                 default:
-                                    return EmailType.DIInviteUserInCompanyDA;
+                                    return EmailType.ChannelTwoInviteUserInCompanyDA;
                             }
                     }
                     break;
@@ -1028,40 +988,43 @@
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.JusttBonusLinesDa;
+                                    return EmailType.ChannelOneBonusLinesDa;
                                 default:
-                                    return EmailType.JusttBonusLinesDa;
+                                    return EmailType.ChannelOneBonusLinesDa;
                             }
                         case 12:
                             switch (culture)
                             {
                                 case "en-US":
-                                    return EmailType.DIBonusLinesDA;
+                                    return EmailType.ChannelTwoBonusLinesDA;
                                 default:
-                                    return EmailType.DIBonusLinesDA;
+                                    return EmailType.ChannelTwoBonusLinesDA;
                             }
                     }
                     break;
                 #endregion
 
                 #region AdminInviteUserEasyOnboarding
+
                 case "AdminInviteUserEasyOnboarding":
-                    return EmailType.JusttAdminInvitesUsersDa;
+                    return EmailType.ChannelOneAdminInvitesUsersDa;
                     break;
+
                 #endregion
 
                 #region AdminNoInviteUserEasyOnboarding
+
                 case "AdminNoInviteUserEasyOnboarding":
-                    return EmailType.JusttAdminNoInvitesUsersDa;
+                    return EmailType.ChannelOneAdminNoInvitesUsersDa;
                     break;
+
                 #endregion
 
             }
 
-            return EmailType.JusttConfirmEn;
+            return EmailType.ChannelOneConfirmEn;
         }
+
         #endregion
     }
-
-    
 }
