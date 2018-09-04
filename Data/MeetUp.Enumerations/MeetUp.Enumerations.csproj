@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6308B3F9-006C-4638-866D-49DDE08B3464}</ProjectGuid>
+    <ProjectGuid>{D5600334-8BBE-4D27-A0D3-F63914A04CE4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MeetUp.Migration</RootNamespace>
-    <AssemblyName>MeetUp.Migration</AssemblyName>
+    <RootNamespace>MeetUp.Enumerations</RootNamespace>
+    <AssemblyName>MeetUp.Enumerations</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,14 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -48,26 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MigrationExtensions.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Channel.cs" />
+    <Compile Include="MessageKind.cs" />
+    <Compile Include="MessageStatus.cs" />
+    <Compile Include="MessageType.cs" />
+    <Compile Include="OrderStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MeetUp.Enumerations\MeetUp.Enumerations.csproj">
-      <Project>{d5600334-8bbe-4d27-a0d3-f63914a04ce4}</Project>
-      <Name>MeetUp.Enumerations</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MeetUp.Model\MeetUp.Model.csproj">
-      <Project>{3629ac4c-caa7-4ba2-a839-2fd28f1ff2e4}</Project>
-      <Name>MeetUp.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Readme.txt" />
+    <Compile Include="StringEnumExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

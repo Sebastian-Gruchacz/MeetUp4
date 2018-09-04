@@ -31,9 +31,31 @@
         }
 
 
-        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Customer_Order> CustomerOrders { get; set; }
+
+        public virtual DbSet<OrderLine> CustomerOrderLines { get; set; }
+
+        public virtual DbSet<CustomerOrderAttachment> CustomerOrderAttachments { get; set; }
 
         public virtual DbSet<Customer> Customers { get; set; }
+
+        public virtual DbSet<Supplier> Suppliers { get; set; }
+
+        public virtual DbSet<Department> Departments { get; set; }
+
+        public virtual DbSet<SupplierOrderPolicy> SupplierOrderPolicies { get; set; }
+
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+
+        public virtual DbSet<MailMessage> MailMessages { get; set; }
+
+        public virtual DbSet<MailAttachment> MailMessageAttachmentss { get; set; }
+
+        public virtual DbSet<UserCustomerRole> UserCustomerRoles { get; set; }
+
+
 
 
         // ... more entities come here ...

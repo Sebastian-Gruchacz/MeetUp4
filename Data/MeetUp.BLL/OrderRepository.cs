@@ -2,6 +2,7 @@
 namespace MeetUp.Model
 {
     using System;
+    using System.Data.Entity;
     using System.Linq;
 
     /// <summary>
@@ -9,19 +10,24 @@ namespace MeetUp.Model
     /// </summary>
     public static class OrderRepository
     {
-        public static IQueryable<Order> ForCustomer(this IQueryable<Order> orders, Customer customer)
+        public static IQueryable<Customer_Order> FromCustomer(this IQueryable<Customer_Order> orders, Customer customer)
         {
-            return orders.Where(o => o.CustomerId == customer.Id);
+            return orders.Where(o => o.FromCustomerId == customer.Id);
         }
 
-        public static IQueryable<Order> AreActive(this IQueryable<Order> orders)
+        public static IQueryable<Customer_Order> AreActive(this IQueryable<Customer_Order> orders)
         {
             return orders.Where(o => !o.Deleted);
         }
 
-        public static IQueryable<Order> WerePlacedBefore(this IQueryable<Order> orders, DateTime date)
+        public static IQueryable<Customer_Order> WerePlacedBefore(this IQueryable<Customer_Order> orders, DateTime date)
         {
-            return orders.Where(o => o.Created < date);
+            return orders.Where(o => o.DateCreatedUtc < date);
+        }
+
+        public static IQueryable<Customer_Order> WithOrderLines(this IQueryable<Customer_Order> orders)
+        {
+            return orders.Include(o => o.OrderLines);
         }
     }
 }
