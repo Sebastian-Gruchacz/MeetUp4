@@ -31,9 +31,18 @@
         }
 
 
-        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Customer_Order> CustomerOrders { get; set; }
+
+        public virtual DbSet<CustomerOrderAttachment> CustomerOrderAttachments { get; set; }
 
         public virtual DbSet<Customer> Customers { get; set; }
+
+        public virtual DbSet<Supplier> Suppliers { get; set; }
+
+        public virtual DbSet<Department> Departments { get; set; }
+
+        public virtual DbSet<SupplierOrderPolicy> SupplierOrderPolicies { get; set; }
+
 
 
         // ... more entities come here ...
