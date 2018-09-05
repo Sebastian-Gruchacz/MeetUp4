@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MeetUp.Common
+namespace LeadService
 {
-    public class ComplexResult
+    public class Class1
     {
     }
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D5600334-8BBE-4D27-A0D3-F63914A04CE4}</ProjectGuid>
+    <ProjectGuid>{E01278FC-70A6-4C0E-A613-94FBCA2465B4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MeetUp.Enumerations</RootNamespace>
-    <AssemblyName>MeetUp.Enumerations</AssemblyName>
+    <RootNamespace>LeadService</RootNamespace>
+    <AssemblyName>LeadService</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,14 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Channel.cs" />
-    <Compile Include="LeadStatus.cs" />
-    <Compile Include="MessageKind.cs" />
-    <Compile Include="MessageStatus.cs" />
-    <Compile Include="MessageType.cs" />
-    <Compile Include="OrderStatus.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="CustomerLeadServiceResponse.cs" />
+    <Compile Include="ICustomerLeadStatusService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringEnumExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\MeetUp.Model\MeetUp.Model.csproj">
+      <Project>{3629AC4C-CAA7-4BA2-A839-2FD28F1FF2E4}</Project>
+      <Name>MeetUp.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

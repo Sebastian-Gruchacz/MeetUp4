@@ -11,6 +11,8 @@
 
     using HtmlAgilityPack;
 
+    using LeadService;
+
     using Mandrill;
 
     using MeetUp.Enumerations;
@@ -30,19 +32,21 @@
         private readonly IMailMessageService _mailMessageService;
         private readonly ICustomerOrderService _customerOrderService;
         private readonly IMailAttachmentService _mailAttachmentService;
+        private readonly ICustomerLeadStatusService _customerLeadStatusService;
 
         #endregion
 
         #region Constructors
 
         public CustomerOrder(IOrderFormService formService, ICustomerOrderService customerOrderService, ISupplierService supplierService,
-            IMailMessageService mailMessageService, IFileStore fileStore, IMailAttachmentService mailAttachmentService)
+            IMailMessageService mailMessageService, IFileStore fileStore, IMailAttachmentService mailAttachmentService, ICustomerLeadStatusService customerLeadStatusService)
         {
             _fileStore = fileStore;
             _supplierService = supplierService;
             _mailMessageService = mailMessageService;
             _customerOrderService = customerOrderService;
             _mailAttachmentService = mailAttachmentService;
+            _customerLeadStatusService = customerLeadStatusService;
             _formService = formService;
         }
 
@@ -74,9 +78,6 @@
                 {
                     continue;
                 }
-
-
-
 
                 List<Customer_Order> customerOrderList = _customerOrderService.GetNewOrders(supplier.SupplierId);
                 Logger.Info($"Pending Orders For {supplier.Name} = {customerOrderList.Count}");
@@ -111,105 +112,130 @@
                                 continue;
                             }
                         }
-                        
-                        var emailHtmlBody = "";
-                        if (customerOrder.IsJson == null || customerOrder.IsJson == false)
+
+                        var response = SaveLeadStatus(customerOrder.ForSupplierId, customerOrder.FromCustomerId, customerOrder.FromDepartmentId, user.Id, supplierEmployeeLimitForOrder, customerOrder.Id);
+                        if (response != null && response.IsSuccess)
                         {
-                            Logger.Info($"Orders# {customerOrder.Id} = is XML");
-                            XmlDocument xmlDoc = new XmlDocument();
-                            xmlDoc.LoadXml(customerOrder.OrderXML);
-
-                            //XmlNode XmlOrder = xmlDoc.SelectSingleNode("//Order");
-                            XmlNode xmlOrderDetail = xmlDoc.SelectSingleNode("//OrderDetail");
-
-
-                            XmlElement fieldNode = xmlDoc.CreateElement("Field");
-                            xmlOrderDetail.AppendChild(fieldNode);
-
-                            //Creating Child Node of the Key
-                            XmlElement childKey = xmlDoc.CreateElement("Key");
-                            //childKey.Attributes.Append(xmlDoc.CreateAttribute("name", "trackTid"));
-                            childKey.InnerText = "TrackingLeadId";
-
-                            fieldNode.AppendChild(childKey);
-
-                            //Creating Child Node of the Value
-                            XmlElement childValue = xmlDoc.CreateElement("Value");
-                            childValue.InnerText = response.TrackingLeadId.ToString();
-
-                            fieldNode.AppendChild(childValue);
-
-                            customerOrder.OrderXML = xmlDoc.OuterXml;
-                            emailHtmlBody = new Helper.XSLTransformHelper().CreateHTML(customerOrder.OrderXML, user.LanguageCode);
-                        }
-                        else
-                        {
-                            Logger.Info($"Orders# {customerOrder.Id} = is XML");
-                            emailHtmlBody = _formService.ConvertToHTML(customerOrder.OrderXML, response.TrackingLeadId, customerOrder.Id).Message;
-                        }
-
-                        Logger.Info("Orders# {0} HTML = " + emailHtmlBody, customerOrder.Id);
-
-                        if (!string.IsNullOrEmpty(emailHtmlBody))
-                        {
-                            HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-                            doc.LoadHtml(emailHtmlBody);
-
-                            var tbl = doc.GetElementbyId("tbl");
-                            var nodes = tbl.SelectNodes("tr/td");
-                            foreach (var node in nodes)
+                            var emailHtmlBody = "";
+                            if (customerOrder.IsJson == null || customerOrder.IsJson == false)
                             {
-                                if (node.InnerText.Contains(response.TrackingLeadId.ToString()))
+                                Logger.Info($"Orders# {customerOrder.Id} = is XML");
+                                XmlDocument xmlDoc = new XmlDocument();
+                                xmlDoc.LoadXml(customerOrder.OrderXML);
+
+                                //XmlNode XmlOrder = xmlDoc.SelectSingleNode("//Order");
+                                XmlNode xmlOrderDetail = xmlDoc.SelectSingleNode("//OrderDetail");
+
+
+                                XmlElement fieldNode = xmlDoc.CreateElement("Field");
+                                xmlOrderDetail.AppendChild(fieldNode);
+
+                                //Creating Child Node of the Key
+                                XmlElement childKey = xmlDoc.CreateElement("Key");
+                                //childKey.Attributes.Append(xmlDoc.CreateAttribute("name", "trackTid"));
+                                childKey.InnerText = "TrackingLeadId";
+
+                                fieldNode.AppendChild(childKey);
+
+                                //Creating Child Node of the Value
+                                XmlElement childValue = xmlDoc.CreateElement("Value");
+                                childValue.InnerText = response.TrackingLeadId.ToString();
+
+                                fieldNode.AppendChild(childValue);
+
+                                customerOrder.OrderXML = xmlDoc.OuterXml;
+                                emailHtmlBody = new XSLTransformHelper().CreateHTML(customerOrder.OrderXML, user.LanguageCode);
+                            }
+                            else
+                            {
+                                Logger.Info($"Orders# {customerOrder.Id} = is XML");
+                                emailHtmlBody = _formService.ConvertToHTML(customerOrder.OrderXML, response.TrackingLeadId, customerOrder.Id).Message;
+                            }
+
+                            Logger.Info("Orders# {0} HTML = " + emailHtmlBody, customerOrder.Id);
+
+                            if (!string.IsNullOrEmpty(emailHtmlBody))
+                            {
+                                HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                                doc.LoadHtml(emailHtmlBody);
+
+                                var tbl = doc.GetElementbyId("tbl");
+                                var nodes = tbl.SelectNodes("tr/td");
+                                foreach (var node in nodes)
                                 {
-                                    node.Attributes.Append("name", "trackTid");
+                                    if (node.InnerText.Contains(response.TrackingLeadId.ToString()))
+                                    {
+                                        node.Attributes.Append("name", "trackTid");
+                                    }
                                 }
+
+                                emailHtmlBody = doc.DocumentNode.InnerHtml;
                             }
 
-                            emailHtmlBody = doc.DocumentNode.InnerHtml;
-                        }
-
-                        // department email, and support email.
-                        orderFromEmail = customerOrder.OrderEmail.Equals(supportEmail) ? orderFromEmail : customerOrder.Department.InternalEmail;
-                        var attachments = GetEmailAttachment(customerOrder);
-                        Logger.Info(String.Format("Orders# {0} has attachments = " + attachments?.Count, customerOrder.Id));
-                        if (supplierEmployeeLimitForOrder)
-                        {
-                            string recipientEmail = (string.IsNullOrEmpty(customerOrder.OrderEmail) ? supplier.SupplierOrderPolicies.ToList()[0].OrderEmailAddress : customerOrder.OrderEmail);
-                            ////get email attachments
-
-                            MailMessageResponse message = SaveMailMessage(user.Id, supplier.Name, emailSubject, emailHtmlBody, user.InternalEmail, recipientEmail, response.TrackingLeadId, customerOrder.FromCustomerId, customerOrder.FromDepartmentId);
-                            if (customerOrder.CustomerOrderAttachments.Count > 0)
+                            // department email, and support email.
+                            orderFromEmail = customerOrder.OrderEmail.Equals(supportEmail)
+                                ? orderFromEmail
+                                : customerOrder.Department.InternalEmail;
+                            var attachments = GetEmailAttachment(customerOrder);
+                            Logger.Info(String.Format("Orders# {0} has attachments = " + attachments?.Count,
+                                customerOrder.Id));
+                            if (supplierEmployeeLimitForOrder)
                             {
-                                SaveCustomerAttachmentsInMailMessage(customerOrder.CustomerOrderAttachments, message.MessageId);
+                                string recipientEmail = (string.IsNullOrEmpty(customerOrder.OrderEmail)
+                                    ? supplier.SupplierOrderPolicies.ToList()[0].OrderEmailAddress
+                                    : customerOrder.OrderEmail);
+                                ////get email attachments
+
+                                MailMessageResponse message = SaveMailMessage(user.Id, supplier.Name, emailSubject,
+                                    emailHtmlBody, user.InternalEmail, recipientEmail, response.TrackingLeadId,
+                                    customerOrder.FromCustomerId, customerOrder.FromDepartmentId);
+                                if (customerOrder.CustomerOrderAttachments.Count > 0)
+                                {
+                                    SaveCustomerAttachmentsInMailMessage(customerOrder.CustomerOrderAttachments,
+                                        message.MessageId);
+                                }
+
+                                SendEmail(user, emailHtmlBody, recipientEmail,
+                                    customerOrder.Customer.ChannelId.ToString(), orderFromEmail, user.LanguageCode,
+                                    supplier.Name, customerOrder.Customer.CustomerName, attachments);
+
+                                var html = _formService.GetOrderQuestionsHtml(customerOrder.Id);
+
+                                SendOrderToPrimaryEmail(user, emailSubject, html, response.TrackingLeadId,
+                                    supplier.Name, attachments, customerOrder.Customer.ChannelId.ToString(),
+                                    customerOrder.FromCustomerId, customerOrder.FromDepartmentId,
+                                    customerOrder.CustomerOrderAttachments);
                             }
-
-                            SendEmail(user, emailHtmlBody, recipientEmail, customerOrder.Customer.ChannelId.ToString(), orderFromEmail, user.LanguageCode, supplier.Name, customerOrder.Customer.CustomerName, attachments);
-
-                            var html = _formService.GetOrderQuestionsHtml(customerOrder.Id);
-
-                            SendOrderToPrimaryEmail(user, emailSubject, html, response.TrackingLeadId, supplier.Name, attachments, customerOrder.Customer.ChannelId.ToString(), customerOrder.FromCustomerId, customerOrder.FromDepartmentId, customerOrder.CustomerOrderAttachments);
-                        }
-                        else
-                        {
-                            MailMessageResponse message = SaveMailMessage(user.Id, supplier.Name, emailSubject, emailHtmlBody, user.InternalEmail, supplier.InternalSupportEmailForSpecialSituations, response.TrackingLeadId, customerOrder.FromCustomerId, customerOrder.FromDepartmentId);
-                            if (customerOrder.CustomerOrderAttachments.Count > 0)
+                            else
                             {
-                                SaveCustomerAttachmentsInMailMessage(customerOrder.CustomerOrderAttachments, message.MessageId);
+                                MailMessageResponse message = SaveMailMessage(user.Id, supplier.Name, emailSubject,
+                                    emailHtmlBody, user.InternalEmail,
+                                    supplier.InternalSupportEmailForSpecialSituations, response.TrackingLeadId,
+                                    customerOrder.FromCustomerId, customerOrder.FromDepartmentId);
+                                if (customerOrder.CustomerOrderAttachments.Count > 0)
+                                {
+                                    SaveCustomerAttachmentsInMailMessage(customerOrder.CustomerOrderAttachments,
+                                        message.MessageId);
+                                }
+
+                                // Sending Email to Supplier
+                                SendEmail(user, emailHtmlBody, supplier.InternalSupportEmailForSpecialSituations,
+                                    customerOrder.Customer.ChannelId.ToString(), orderFromEmail, user.LanguageCode,
+                                    supplier.Name, customerOrder.Customer.CustomerName, attachments);
+
+                                var html = _formService.GetOrderQuestionsHtml(customerOrder.Id);
+
+                                SendOrderToPrimaryEmail(user, emailSubject, html, response.TrackingLeadId,
+                                    supplier.Name, attachments, customerOrder.Customer.ChannelId.ToString(),
+                                    customerOrder.FromCustomerId, customerOrder.FromDepartmentId,
+                                    customerOrder.CustomerOrderAttachments);
                             }
 
-                            // Sending Email to Supplier
-                            SendEmail(user, emailHtmlBody, supplier.InternalSupportEmailForSpecialSituations, customerOrder.Customer.ChannelId.ToString(), orderFromEmail, user.LanguageCode, supplier.Name, customerOrder.Customer.CustomerName, attachments);
+                            customerOrder.Status = OrderStatus.Sent;
+                            customerOrder.SentDateTimeUtc = DateTime.UtcNow;
 
-                            var html = _formService.GetOrderQuestionsHtml(customerOrder.Id);
-
-                            SendOrderToPrimaryEmail(user, emailSubject, html, response.TrackingLeadId, supplier.Name, attachments, customerOrder.Customer.ChannelId.ToString(), customerOrder.FromCustomerId, customerOrder.FromDepartmentId, customerOrder.CustomerOrderAttachments);
+                            _customerOrderService.SaveCustomerOrder(customerOrder);
                         }
-
-                        customerOrder.Status = OrderStatus.Sent;
-                        customerOrder.SentDateTimeUtc = DateTime.UtcNow;
-
-                        _customerOrderService.SaveCustomerOrder(customerOrder);
-                        
                     }
                     catch (Exception ex)
                     {
@@ -225,6 +251,29 @@
         #endregion
 
         #region private method
+
+        private CustomerLeadServiceResponse SaveLeadStatus(int supplierId, int customerId, int departmentId, Guid userId, bool supplierEmployeeLimitForOrder, Guid orderId)
+        {
+            CustomerLeadStatus leadStatus = new CustomerLeadStatus
+            {
+                ForSupplierId = supplierId,
+                FromCustomerId = customerId,
+                FromDepartmentId = departmentId,
+                FromUserId = userId,
+                OrderId = orderId
+            };
+
+            CustomerLeadStatusDetail leadDetail = new CustomerLeadStatusDetail
+            {
+                CreatedUserId = userId,
+                LeadStatus = (supplierEmployeeLimitForOrder) ? LeadStatus.PendingSupplier : LeadStatus.PendingInternal,
+                UserComments = (supplierEmployeeLimitForOrder) ? @"Waiting for Supplier response." : @"Waiting for Support response. Lead has been sent to Support."
+            };
+
+            leadStatus.CustomerLeadStatusDetail.Add(leadDetail);
+
+            return _customerLeadStatusService.SaveCustomerLead(leadStatus);
+        }
 
         private Boolean SendEmail(AspNetUser user, string message, string DestinationEmail, string channelId, string SenderEmail, string culture, string RecipientName, string SenderName, List<email_attachment> attachmentList)
         {

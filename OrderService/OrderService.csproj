@@ -152,6 +152,7 @@
     <Compile Include="IOrderFormService.cs" />
     <Compile Include="ISupplierService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Helper\XSLTransformHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\MeetUp.BLL\MeetUp.BLL.csproj">
@@ -174,10 +175,22 @@
       <Project>{750BC88C-0B10-4E27-80CD-A46FB25E3265}</Project>
       <Name>EmailingService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Services\FileStorageService\FileStorageService.csproj">
+      <Project>{9F067CC8-9D8E-4764-94F6-6EEF978BFF75}</Project>
+      <Name>FileStorageService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\LeadService\LeadService.csproj">
+      <Project>{E01278FC-70A6-4C0E-A613-94FBCA2465B4}</Project>
+      <Name>LeadService</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Helper\XSLTOrderFile.xslt" />
+    <Content Include="Helper\XSLTOrderFileDanish.xslt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -1,13 +1,35 @@
-﻿namespace OrderService
+﻿namespace EmailingService
 {
     using System.Collections.Generic;
 
     using MeetUp.Model;
 
+    using OrderService;
+
     public interface IMailMessageService
     {
-        MailMessageResponse SaveMailMessage(MailMessage mailMessage);
+        /// <summary>
+        /// Saves Email Message Meta-data to DB. With attachments?
+        /// </summary>
+        /// <param name="mailMessage"></param>
+        /// <returns></returns>
+        MailMessageResponse SaveMailMessage(MeetUp.Model.MailMessage mailMessage);
+
+        /// <summary>
+        /// Get's list of messages connected to a lead. There may be whole stack of correspondence between Customer, supplier and Internal Support regarding.
+        /// </summary>
+        /// <param name="leadid"></param>
+        /// <returns></returns>
+        /// <remarks>Yes, name of the method is wrong.</remarks>
         List<MailMessage> GetParentLeadMessage(int leadid);
-        void SaveMailMessage(MailMessage mail, string slug, string channelId, Dictionary<string, string> emailContents);
+
+        /// <summary>
+        /// Yes, another was yo save message into DB, this time outgoing message...
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <param name="slug"></param>
+        /// <param name="channelId"></param>
+        /// <param name="emailContents"></param>
+        void SaveMailMessage(MeetUp.Model.MailMessage mail, string slug, string channelId, Dictionary<string, string> emailContents);
     }
 }

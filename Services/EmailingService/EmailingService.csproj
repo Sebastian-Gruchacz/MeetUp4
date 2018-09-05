@@ -72,5 +72,11 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\MeetUp.Model\MeetUp.Model.csproj">
+      <Project>{3629AC4C-CAA7-4BA2-A839-2FD28F1FF2E4}</Project>
+      <Name>MeetUp.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

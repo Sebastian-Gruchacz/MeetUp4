@@ -5,6 +5,8 @@
 
     using NLog;
 
+    using OrderService;
+
     public partial class MeetupDbContext : DbContext
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
@@ -19,7 +21,7 @@
 
         public MeetupDbContext(DbConnection connection) : base(connection, true)
         {
-            // Could potentially add more info from connection, but OFC be careful to not expose security-critical data like password...
+            // Could potentially debug some more info from connection, but OFC be careful to not expose security-critical data like password...
             Logger.Trace($"Regular context created for {connection.Database}");
         }
 
@@ -55,7 +57,9 @@
 
         public virtual DbSet<UserCustomerRole> UserCustomerRoles { get; set; }
 
+        public virtual DbSet<CustomerLeadStatus> CustomerLeadStatuses { get; set; }
 
+        public virtual DbSet<CustomerLeadStatusDetail> CustomerLeadStatusDetails { get; set; }
 
 
         // ... more entities come here ...

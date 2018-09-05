@@ -59,6 +59,8 @@
     <Compile Include="AspNetRole.cs" />
     <Compile Include="AspNetUser.cs" />
     <Compile Include="Customer.cs" />
+    <Compile Include="CustomerLeadStatus.cs" />
+    <Compile Include="CustomerLeadStatusDetail.cs" />
     <Compile Include="CustomerOrderAttachment.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="MailAttachment.cs" />

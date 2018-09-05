@@ -1,4 +1,4 @@
-﻿namespace OrderService
+﻿namespace EmailingService
 {
     using MeetUp.Model;
 
