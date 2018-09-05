@@ -3,7 +3,9 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class MailAttachment
+    using Common;
+
+    public class MailAttachment : ITrackeable
     {
         public Guid MessageId { get; set; }
 
@@ -20,5 +22,17 @@
         public string MimeType { get; set; }
 
         public DateTime CreatedUtcDateTime { get; set; }
+
+        /// <inheritdoc />
+        public DateTime? ModifiedDateTimeUtc { get; set; }
+
+        /// <inheritdoc />
+        public DateTime CreatedDateTimeUtc { get; set; }
+
+        /// <inheritdoc />
+        public Guid CreatedBy { get; set; }
+
+        /// <inheritdoc />
+        public Guid? LastModifiedBy { get; set; }
     }
 }

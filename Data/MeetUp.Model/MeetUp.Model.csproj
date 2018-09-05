@@ -79,6 +79,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\MeetUp.Common\MeetUp.Common.csproj">
+      <Project>{32FFF58E-3660-409C-99C8-D40EE69ED61D}</Project>
+      <Name>MeetUp.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MeetUp.Enumerations\MeetUp.Enumerations.csproj">
       <Project>{D5600334-8BBE-4D27-A0D3-F63914A04CE4}</Project>
       <Name>MeetUp.Enumerations</Name>

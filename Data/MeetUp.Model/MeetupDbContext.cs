@@ -5,8 +5,6 @@
 
     using NLog;
 
-    using OrderService;
-
     public partial class MeetupDbContext : DbContext
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
@@ -33,33 +31,33 @@
         }
 
 
-        public virtual DbSet<Customer_Order> CustomerOrders { get; set; }
+        //public virtual DbSet<Customer_Order> CustomerOrders { get; set; }
 
-        public virtual DbSet<OrderLine> CustomerOrderLines { get; set; }
+        //public virtual DbSet<OrderLine> CustomerOrderLines { get; set; }
 
-        public virtual DbSet<CustomerOrderAttachment> CustomerOrderAttachments { get; set; }
+        //public virtual DbSet<CustomerOrderAttachment> CustomerOrderAttachments { get; set; }
 
-        public virtual DbSet<Customer> Customers { get; set; }
+        //public virtual DbSet<Customer> Customers { get; set; }
 
-        public virtual DbSet<Supplier> Suppliers { get; set; }
+        //public virtual DbSet<Supplier> Suppliers { get; set; }
 
-        public virtual DbSet<Department> Departments { get; set; }
+        //public virtual DbSet<Department> Departments { get; set; }
 
-        public virtual DbSet<SupplierOrderPolicy> SupplierOrderPolicies { get; set; }
+        //public virtual DbSet<SupplierOrderPolicy> SupplierOrderPolicies { get; set; }
 
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
 
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
 
-        public virtual DbSet<MailMessage> MailMessages { get; set; }
+        //public virtual DbSet<MailMessage> MailMessages { get; set; }
 
-        public virtual DbSet<MailAttachment> MailMessageAttachmentss { get; set; }
+        //public virtual DbSet<MailAttachment> MailMessageAttachmentss { get; set; }
 
-        public virtual DbSet<UserCustomerRole> UserCustomerRoles { get; set; }
+        //public virtual DbSet<UserCustomerRole> UserCustomerRoles { get; set; }
 
-        public virtual DbSet<CustomerLeadStatus> CustomerLeadStatuses { get; set; }
+        //public virtual DbSet<CustomerLeadStatus> CustomerLeadStatuses { get; set; }
 
-        public virtual DbSet<CustomerLeadStatusDetail> CustomerLeadStatusDetails { get; set; }
+        //public virtual DbSet<CustomerLeadStatusDetail> CustomerLeadStatusDetails { get; set; }
 
 
         // ... more entities come here ...

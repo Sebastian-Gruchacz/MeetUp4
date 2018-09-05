@@ -34,9 +34,9 @@
                 if (customerLeadModel != null)
                 {
 
-                    customerLeadModel.LastUpdatedUTCDateTime = DateTime.UtcNow;
+                    customerLeadModel.ModifiedDateTimeUtc = DateTime.UtcNow;
 
-                    if (!string.IsNullOrEmpty(customerLead.FromUserId))
+                    if (customerLead.FromUserId != Guid.Empty)
                         customerLeadModel.FromUserId = customerLead.FromUserId;
 
                     if (customerLead.ForSupplierId > 0)
@@ -60,8 +60,8 @@
                 }
                 else
                 {
-                    customerLead.CreatedUTCDateTime = DateTime.UtcNow;
-                    customerLead.LastUpdatedUTCDateTime = DateTime.UtcNow;
+                    customerLead.CreatedDateTimeUtc = DateTime.UtcNow;
+                    customerLead.ModifiedDateTimeUtc = DateTime.UtcNow;
 
                     if (customerLead.CustomerLeadStatusDetail != null && customerLead.CustomerLeadStatusDetail.Count > 0)
                     {

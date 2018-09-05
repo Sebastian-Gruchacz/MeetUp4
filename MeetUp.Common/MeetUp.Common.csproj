@@ -42,8 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IRepository.cs" />
+    <Compile Include="ITrackeable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceResponse.cs" />
+    <Compile Include="SystemUsers.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

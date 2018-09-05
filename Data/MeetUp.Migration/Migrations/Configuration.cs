@@ -1,6 +1,11 @@
 namespace MeetUp.Migration.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
+
+    using Common;
+
+    using Model;
 
     internal sealed class Configuration : DbMigrationsConfiguration<MeetUp.Model.MeetupDbContext>
     {
@@ -11,10 +16,21 @@ namespace MeetUp.Migration.Migrations
 
         protected override void Seed(MeetUp.Model.MeetupDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            // Used Seed only to add core Migrator user to the system, no need to run this check every update. 
+            // Stupid, should be per migration.
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
+            context.AspNetUsers.AddOrUpdate(new AspNetUser
+            {
+                Id = SystemUsers.Migrator,
+                FirstName = nameof(SystemUsers.Migrator),
+                LastName = nameof(SystemUsers),
+                Email = $"{nameof(SystemUsers.Migrator).ToLower()}@sysusers.internal",
+                InternalEmail = null, // not possible to email him
+                IsSystemUser = true,
+                LanguageCode = "en-US",
+                CreatedBy = SystemUsers.Migrator,
+                CreatedDateTimeUtc = DateTime.UtcNow
+            });
         }
     }
 }

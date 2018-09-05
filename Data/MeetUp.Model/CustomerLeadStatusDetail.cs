@@ -1,8 +1,10 @@
-﻿namespace OrderService
+﻿namespace MeetUp.Model
 {
     using System;
 
-    public class CustomerLeadStatusDetail
+    using Common;
+
+    public class CustomerLeadStatusDetail : ITrackeable
     {
         public DateTime CreatedUTCDateTime;
 
@@ -15,5 +17,17 @@
         public string UserComments { get; set; }
 
         public int TransactionId { get; set; }
+
+        /// <inheritdoc />
+        public DateTime? ModifiedDateTimeUtc { get; set; }
+
+        /// <inheritdoc />
+        public DateTime CreatedDateTimeUtc { get; set; }
+
+        /// <inheritdoc />
+        public Guid CreatedBy { get; set; }
+
+        /// <inheritdoc />
+        public Guid? LastModifiedBy { get; set; }
     }
 }
