@@ -3,7 +3,7 @@
     public enum MessageStatus
     {
         Unknwon = 0,
-        New,
-        Read
+        Unread,
+        Read,
     }
 }

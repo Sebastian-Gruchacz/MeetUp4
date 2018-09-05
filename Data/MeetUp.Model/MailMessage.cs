@@ -41,7 +41,7 @@
         public MessageType Type { get; set; }
 
         public MessageStatus Status { get; set; }
-        
+
         public int? CustomerId { get; set; }
 
         public int? DepartmentId { get; set; }
@@ -56,7 +56,10 @@
 
         public virtual Customer Customer { get; set; }
 
+        public DateTime SentUtcDateTime { get; set; }
+
+        public Guid? ParentMessageId { get; set; }
+
         public virtual ICollection<MailAttachment> Attachments { get; set; }
-        
     }
 }

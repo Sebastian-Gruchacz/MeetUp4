@@ -8,7 +8,7 @@ namespace MeetUp.Model
     /// <summary>
     /// This is improved repository pattern to work with UnitOfWork
     /// </summary>
-    public static class OrderRepository
+    public static class ExtensibleOrderRepository
     {
         public static IQueryable<Customer_Order> FromCustomer(this IQueryable<Customer_Order> orders, Customer customer)
         {

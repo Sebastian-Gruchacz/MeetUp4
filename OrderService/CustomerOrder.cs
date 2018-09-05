@@ -9,6 +9,8 @@
 
     using EmailingService;
 
+    using FileStorageService;
+
     using HtmlAgilityPack;
 
     using LeadService;

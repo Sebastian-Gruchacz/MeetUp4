@@ -31,8 +31,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NLog.4.5.9\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,16 +49,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="CustomerLeadStatusService.cs" />
     <Compile Include="CustomerLeadServiceResponse.cs" />
     <Compile Include="ICustomerLeadStatusService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Data\MeetUp.BLL\MeetUp.BLL.csproj">
+      <Project>{3020A898-AE1D-43C0-BC0F-D67FEDB54C6F}</Project>
+      <Name>MeetUp.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\MeetUp.Enumerations\MeetUp.Enumerations.csproj">
+      <Project>{D5600334-8BBE-4D27-A0D3-F63914A04CE4}</Project>
+      <Name>MeetUp.Enumerations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Data\MeetUp.Model\MeetUp.Model.csproj">
       <Project>{3629AC4C-CAA7-4BA2-A839-2FD28F1FF2E4}</Project>
       <Name>MeetUp.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\MeetUp.Common\MeetUp.Common.csproj">
+      <Project>{32FFF58E-3660-409C-99C8-D40EE69ED61D}</Project>
+      <Name>MeetUp.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

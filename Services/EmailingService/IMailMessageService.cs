@@ -4,8 +4,6 @@
 
     using MeetUp.Model;
 
-    using OrderService;
-
     public interface IMailMessageService
     {
         /// <summary>
@@ -13,7 +11,7 @@
         /// </summary>
         /// <param name="mailMessage"></param>
         /// <returns></returns>
-        MailMessageResponse SaveMailMessage(MeetUp.Model.MailMessage mailMessage);
+        MailMessageResponse SaveMailMessage(MailMessage mailMessage);
 
         /// <summary>
         /// Get's list of messages connected to a lead. There may be whole stack of correspondence between Customer, supplier and Internal Support regarding.
@@ -30,6 +28,7 @@
         /// <param name="slug"></param>
         /// <param name="channelId"></param>
         /// <param name="emailContents"></param>
-        void SaveMailMessage(MeetUp.Model.MailMessage mail, string slug, string channelId, Dictionary<string, string> emailContents);
+        /// <returns></returns>
+        MailMessageResponse SaveMailMessage(MailMessage mail, string slug, string channelId, Dictionary<string, string> emailContents);
     }
 }
