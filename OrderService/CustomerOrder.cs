@@ -17,6 +17,7 @@
 
     using Mandrill;
 
+    using MeetUp.Common;
     using MeetUp.Enumerations;
     using MeetUp.Model;
 
@@ -25,6 +26,8 @@
     public class CustomerOrder : ICustomerOrder
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private Guid ServiceId => SystemUsers.OrderService;
 
         #region Private Data member
 
@@ -102,7 +105,7 @@
                         }
 
                         string[] orderSubjctline = subjectLine.Split(',');
-                        var emailSubject = user.LanguageCode == "en-US" ? orderSubjctline[0] : orderSubjctline[1];
+                        var emailSubject = user.LanguageCode == LanguageCode.English ? orderSubjctline[0] : orderSubjctline[1];
 
                         Boolean supplierEmployeeLimitForOrder = true;
                         if (customerOrder.Customer.NoOfEmployee < supplier.SupplierOrderPolicies.ToList()[0].MinEmployeeLimitForOrder)
@@ -262,22 +265,25 @@
                 FromCustomerId = customerId,
                 FromDepartmentId = departmentId,
                 FromUserId = userId,
-                OrderId = orderId
+                OrderId = orderId,
+                CreatedBy = this.ServiceId, // not directly by user, disputable 
+                CreatedDateTimeUtc = DateTime.UtcNow
             };
 
             CustomerLeadStatusDetail leadDetail = new CustomerLeadStatusDetail
             {
-                CreatedUserId = userId,
                 LeadStatus = (supplierEmployeeLimitForOrder) ? LeadStatus.PendingSupplier : LeadStatus.PendingInternal,
-                UserComments = (supplierEmployeeLimitForOrder) ? @"Waiting for Supplier response." : @"Waiting for Support response. Lead has been sent to Support."
+                UserComments = (supplierEmployeeLimitForOrder) ? @"Waiting for Supplier response." : @"Waiting for Support response. Lead has been sent to Support.",
+                CreatedBy = this.ServiceId, // not directly by user, disputable 
+                CreatedDateTimeUtc = DateTime.UtcNow
             };
 
-            leadStatus.CustomerLeadStatusDetail.Add(leadDetail);
+            leadStatus.CustomerLeadStatusDetails.Add(leadDetail);
 
             return _customerLeadStatusService.SaveCustomerLead(leadStatus);
         }
 
-        private Boolean SendEmail(AspNetUser user, string message, string DestinationEmail, string channelId, string SenderEmail, string culture, string RecipientName, string SenderName, List<email_attachment> attachmentList)
+        private Boolean SendEmail(AspNetUser user, string message, string DestinationEmail, string channelId, string SenderEmail, LanguageCode culture, string RecipientName, string SenderName, List<email_attachment> attachmentList)
         {
             EmailProvider client = new EmailProvider(channelId);
 
@@ -310,7 +316,8 @@
                 List<MailMessage> messages = _mailMessageService.GetParentLeadMessage(leadid);
                 MailMessage mesg = messages.FirstOrDefault(p => p.DisplayName.Equals("Circle K"));
 
-                SendEmail(messages.FirstOrDefault().AspNetUser, messages.FirstOrDefault().Body, targetemail, messages.FirstOrDefault().Customer.ChannelId.ToString(), messages.FirstOrDefault().FromAddress, messages.FirstOrDefault().AspNetUser.LanguageCode, messages.FirstOrDefault().DisplayName, messages.FirstOrDefault().Customer.CustomerName, null);
+                SendEmail(messages.FirstOrDefault().AspNetUser, messages.FirstOrDefault().Body, targetemail, messages.FirstOrDefault().Customer.ChannelId.ToString(),
+                    messages.FirstOrDefault().FromAddress, messages.FirstOrDefault().AspNetUser.LanguageCode, messages.FirstOrDefault().DisplayName, messages.FirstOrDefault().Customer.CustomerName, null);
             }
 
             return true;
@@ -357,7 +364,9 @@
                     Kind = MessageKind.Received,
                     ToAddress = user.Email,
                     UserId = user.Id,
-                    HideFromUser = true
+                    HideFromUser = true,
+                    CreatedBy = this.ServiceId,
+                    CreatedDateTimeUtc = DateTime.UtcNow
                 };
 
                 _mailMessageService.SaveMailMessage(mail, slug, channelId, emailContents);
@@ -390,7 +399,9 @@
                 DepartmentId = deptId,
                 Kind = MessageKind.Sent,
                 HideFromUser = true,
-                Type = MessageType.Order
+                Type = MessageType.Order,
+                CreatedBy = this.ServiceId,
+                CreatedDateTimeUtc = DateTime.UtcNow
             };
 
             return _mailMessageService.SaveMailMessage(mailMessage);
@@ -446,13 +457,16 @@
                     FileUrl = item.FileURL,
                     FilePath = item.FilePath,
                     MimeType = item.MimeType,
-                    CreatedUtcDateTime = DateTime.UtcNow
+                    CreatedDateTimeUtc = DateTime.UtcNow,
+                    CreatedBy = this.ServiceId
                 };
 
                 _mailAttachmentService.SaveAttachemnts(attachment);
             }
             return true;
         }
+
+        
 
         #endregion
 

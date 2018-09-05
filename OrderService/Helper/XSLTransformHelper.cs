@@ -6,13 +6,15 @@
     using System.Xml;
     using System.Xml.Xsl;
 
+    using MeetUp.Enumerations;
+
     public class XSLTransformHelper
     {
-        public string CreateHTML(string inputXml, string LanguageCode)
+        public string CreateHTML(string inputXml, LanguageCode LanguageCode)
         {
             XslCompiledTransform transform = new XslCompiledTransform();
             string pathOfFile = string.Empty;
-            if (LanguageCode.Equals("en-US"))
+            if (LanguageCode.Equals(LanguageCode.English))
             {
                 pathOfFile = "XSLTOrderFile";
             }

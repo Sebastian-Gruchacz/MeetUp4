@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using Common;
 
@@ -9,25 +10,35 @@
     {
         [Key]
         public int Id { get; set; }
-
+        
         public Guid AspNetUserId { get; set; }
-
+        
         public int AspNetRoleId { get; set; }
 
-        public virtual AspNetRole AspNetRole { get; set; }
+        /// <inheritdoc />
+        [Required]
+        public Guid CreatedBy { get; set; }
 
-        public virtual AspNetUser AspNetUser { get; set; }
+        /// <inheritdoc />
+        [Required]
+        public DateTime CreatedDateTimeUtc { get; set; }
+
+        /// <inheritdoc />
+        public Guid? LastModifiedBy { get; set; }
 
         /// <inheritdoc />
         public DateTime? ModifiedDateTimeUtc { get; set; }
 
-        /// <inheritdoc />
-        public DateTime CreatedDateTimeUtc { get; set; }
+        [ForeignKey(nameof(CreatedBy))]
+        public virtual AspNetUser Creator { get; set; }
 
-        /// <inheritdoc />
-        public Guid CreatedBy { get; set; }
+        [ForeignKey(nameof(LastModifiedBy))]
+        public virtual AspNetUser LastEditor { get; set; }
 
-        /// <inheritdoc />
-        public Guid? LastModifiedBy { get; set; }
+        [ForeignKey(nameof(AspNetRoleId))]
+        public virtual AspNetRole AspNetRole { get; set; }
+
+        [ForeignKey(nameof(AspNetUserId))]
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

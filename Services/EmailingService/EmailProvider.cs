@@ -7,6 +7,8 @@
     using Mandrill;
     using Mandrill.Models;
 
+    using MeetUp.Enumerations;
+
     using NLog;
 
     public class EmailProvider : IEmailProvider
@@ -468,7 +470,7 @@
             }
         }
 
-        public EmailType GetTemplateType(string resource, string culture, int? myChannel = null)
+        public EmailType GetTemplateType(string resource, LanguageCode culture, int? myChannel = null)
         {
             if (myChannel != null)
                 _channelId = (int)myChannel;
@@ -480,9 +482,9 @@
                     switch (_channelId)
                     {
                         case 1:
-                            switch (culture)
+                            switch (culture.GetLanguageCodeString())
                             {
-                                case "en-US":
+                                case @"en-US":                              // This is how whole method was...
                                     return EmailType.ChannelOneConfirmEn;
                                 default:
                                     return EmailType.ChannelOneConfirmDa;
@@ -490,7 +492,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:                  // now a bit improved
                                     return EmailType.ChannelTwoConfirmDA;
                                 default:
                                     return EmailType.ChannelTwoConfirmDA;
@@ -506,7 +508,7 @@
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneResetPasswordEn;
                                 default:
                                     return EmailType.ChannelOneResetPasswordDa;
@@ -514,7 +516,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoResetPasswordDA;
                                 default:
                                     return EmailType.ChannelTwoResetPasswordDA;
@@ -530,7 +532,7 @@
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneConfirmCategoryPersonEn;
                                 default:
                                     return EmailType.ChannelOneConfirmCategoryPersonDa;
@@ -538,7 +540,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoConfirmCategoryPersonDA;
                                 default:
                                     return EmailType.ChannelTwoConfirmCategoryPersonDA;
@@ -554,7 +556,7 @@
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneCustomerOrderEmailEn;
                                 default:
                                     return EmailType.ChannelOneCustomerOrderEmailDa;
@@ -562,7 +564,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoCustomerOrderEmailDA;
                                 default:
                                     return EmailType.ChannelTwoCustomerOrderEmailDA;
@@ -579,7 +581,7 @@
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneAdminOfNewCompanyEn;
                                 default:
                                     return EmailType.ChannelOneAdminOfNewCompanyDa;
@@ -587,7 +589,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoAdminOfNewCompanyDA;
                                 default:
                                     return EmailType.ChannelTwoAdminOfNewCompanyDA;
@@ -603,7 +605,7 @@
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneSupplierLoginRequestEn;
                                 default:
                                     return EmailType.ChannelOneSupplierLoginRequestDa;
@@ -611,7 +613,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoSupplierLoginRequestDA;
                                 default:
                                     return EmailType.ChannelTwoSupplierLoginRequestDA;
@@ -627,7 +629,7 @@
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneUserEmailEn;
                                 default:
                                     return EmailType.ChannelOneUserEmailDa;
@@ -635,7 +637,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoUserEmailDA;
                                 default:
                                     return EmailType.ChannelTwoUserEmailDA;
@@ -651,7 +653,7 @@
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneOfferRequestOrderEn;
                                 default:
                                     return EmailType.ChannelOneOfferRequestOrderDa;
@@ -659,7 +661,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoOfferRequestOrderEN;
                                 default:
                                     return EmailType.ChannelTwoOfferRequestOrderDA;
@@ -675,7 +677,7 @@
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneInviteUserInCompanyEn;
                                 default:
                                     return EmailType.ChannelOneInviteUserInCompanyDa;
@@ -683,7 +685,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoInviteUserInCompanyEN;
                                 default:
                                     return EmailType.ChannelTwoInviteUserInCompanyDA;
@@ -699,7 +701,7 @@
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneInviteUserInPlatformEn;
                                 default:
                                     return EmailType.ChannelOneInviteUserInPlatformDa;
@@ -707,7 +709,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoInviteUserInPlatformEN;
                                 default:
                                     return EmailType.ChannelTwoInviteUserInPlatformDA;
@@ -723,7 +725,7 @@
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneUpdateUserInCompnayEn;
                                 default:
                                     return EmailType.ChannelOneUpdateUserInCompanyDa;
@@ -731,7 +733,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoInviteUserInCompanyEN;
                                 default:
                                     return EmailType.ChannelTwoInviteUserInCompanyDA;
@@ -747,7 +749,7 @@
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneBonusLinesDa;
                                 default:
                                     return EmailType.ChannelOneBonusLinesDa;
@@ -755,7 +757,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoBonusLinesDA;
                                 default:
                                     return EmailType.ChannelTwoBonusLinesDA;

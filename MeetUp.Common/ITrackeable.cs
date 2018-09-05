@@ -4,12 +4,12 @@
 
     public interface ITrackeable
     {
-        DateTime? ModifiedDateTimeUtc { get; set; }
-
-        DateTime CreatedDateTimeUtc { get; set; }
-
         Guid CreatedBy { get; set; }
 
+        DateTime CreatedDateTimeUtc { get; set; }
+        
         Guid? LastModifiedBy { get; set; }
+
+        DateTime? ModifiedDateTimeUtc { get; set; }
     }
 }

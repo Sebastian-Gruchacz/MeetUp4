@@ -63,14 +63,14 @@
                     customerLead.CreatedDateTimeUtc = DateTime.UtcNow;
                     customerLead.ModifiedDateTimeUtc = DateTime.UtcNow;
 
-                    if (customerLead.CustomerLeadStatusDetail != null && customerLead.CustomerLeadStatusDetail.Count > 0)
+                    if (customerLead.CustomerLeadStatusDetails != null && customerLead.CustomerLeadStatusDetails.Count > 0)
                     {
-                        foreach (var leadDetail in customerLead.CustomerLeadStatusDetail)
+                        foreach (var leadDetail in customerLead.CustomerLeadStatusDetails)
                         {
                             if (leadDetail.TransactionId == 0)
                             {
-                                leadDetail.CreatedUTCDateTime = DateTime.UtcNow;
-                                leadDetail.LastUpdatedUTCDateTime = DateTime.UtcNow;
+                                leadDetail.CreatedDateTimeUtc = DateTime.UtcNow;  // ??? One is bad
+                                leadDetail.ModifiedDateTimeUtc = DateTime.UtcNow; // ???
                             }
                         }
                     }
