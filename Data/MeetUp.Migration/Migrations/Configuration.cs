@@ -33,9 +33,9 @@ namespace MeetUp.Migration.Migrations
                     InternalEmail = null, // not possible to email him
                     IsSystemUser = true,
                     LanguageCode = LanguageCode.English,
-                    //CreatedBy = SystemUsers.Migrator,
-                    //CreatedDateTimeUtc = DateTime.UtcNow
+                    CreatedBy = SystemUsers.Migrator,
+                    CreatedDateTimeUtc = DateTime.UtcNow
                 });
-            }
+        }
     }
 }

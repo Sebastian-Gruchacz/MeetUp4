@@ -57,9 +57,9 @@
     <Compile Include="Migrations\201809052017462_LockUsersTable.Designer.cs">
       <DependentUpon>201809052017462_LockUsersTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809052207219_ModelUpdate.cs" />
-    <Compile Include="Migrations\201809052207219_ModelUpdate.Designer.cs">
-      <DependentUpon>201809052207219_ModelUpdate.cs</DependentUpon>
+    <Compile Include="Migrations\201809060726558_ModelUpdate.cs" />
+    <Compile Include="Migrations\201809060726558_ModelUpdate.Designer.cs">
+      <DependentUpon>201809060726558_ModelUpdate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,8 +92,8 @@
     <EmbeddedResource Include="Migrations\201809052017462_LockUsersTable.resx">
       <DependentUpon>201809052017462_LockUsersTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809052207219_ModelUpdate.resx">
-      <DependentUpon>201809052207219_ModelUpdate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201809060726558_ModelUpdate.resx">
+      <DependentUpon>201809060726558_ModelUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

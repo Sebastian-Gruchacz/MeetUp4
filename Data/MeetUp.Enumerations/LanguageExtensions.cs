@@ -15,8 +15,8 @@
 
         static LanguageExtensions()
         {
-            var values = (LanguageCode[]) Enum.GetValues(typeof(LanguageCode));
-            foreach (var languageCode in values)
+            var values = (LanguageCode[])Enum.GetValues(typeof(LanguageCode));
+            foreach (var languageCode in values.Where(code => code != LanguageCode.Unknown))
             {
                 var desc = GetDescription(languageCode);
 
@@ -32,7 +32,12 @@
 
         public static LanguageCode GetCode(string languageCodeString)
         {
-            if (Enum.TryParse<LanguageCode>(languageCodeString, out var parsed))
+            if (string.IsNullOrWhiteSpace(languageCodeString))
+            {
+                return LanguageCode.Unknown;
+            }
+
+            if (Enum.TryParse<LanguageCode>(languageCodeString, true, out var parsed))
             {
                 return parsed; // is English, Danish...
             }

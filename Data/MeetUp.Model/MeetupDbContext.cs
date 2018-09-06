@@ -2,6 +2,7 @@
 {
     using System.Data.Common;
     using System.Data.Entity;
+    using System.Data.Entity.ModelConfiguration.Conventions;
 
     using NLog;
 
@@ -28,6 +29,14 @@
             Logger.Trace("Context disposed.");
 
             base.Dispose(disposing);
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
         }
 
         public virtual DbSet<Customer_Order> CustomerOrders { get; set; }

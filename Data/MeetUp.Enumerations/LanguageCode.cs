@@ -12,7 +12,9 @@
         [Description(@"da-DK")]
         Danish = 2,
 
-        [Description(@"sv-SE")]
-        Swedish = 3
+        // NOTE: This language is not available at start, this is part of the exercise to enable it
+
+        //[Description(@"sv-SE")]
+        //Swedish = 3
     }
 }

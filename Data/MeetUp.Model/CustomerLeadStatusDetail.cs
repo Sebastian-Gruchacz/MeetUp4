@@ -9,13 +9,13 @@
     public class CustomerLeadStatusDetail : ITrackeable
     {
         [Key]
-        public int StatusId { get; set; }
+        public int TransactionId { get; set; }
 
         public string LeadStatus { get; set; }
 
-        public string UserComments { get; set; }
+        public int LeadTrackingId { get; set; }
 
-        public int TransactionId { get; set; }
+        public string UserComments { get; set; }
 
         /// <inheritdoc />
         [Required]
@@ -37,7 +37,7 @@
         [ForeignKey(nameof(LastModifiedBy))]
         public virtual AspNetUser LastEditor { get; set; }
 
-        [ForeignKey(nameof(TransactionId))]
+        [ForeignKey(nameof(LeadTrackingId))]
         public virtual CustomerLeadStatus ParentLead { get; set; }
     }
 }

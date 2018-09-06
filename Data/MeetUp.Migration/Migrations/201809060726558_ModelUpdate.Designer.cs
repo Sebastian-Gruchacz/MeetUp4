@@ -13,7 +13,7 @@ namespace MeetUp.Migration.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201809052207219_ModelUpdate"; }
+            get { return "201809060726558_ModelUpdate"; }
         }
         
         string IMigrationMetadata.Source

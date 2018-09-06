@@ -4,11 +4,11 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    using Common;
-
     using Enumerations;
 
-    public partial class AspNetUser//: ITrackeable
+    using MeetUp.Common;
+
+    public partial class AspNetUser : ITrackeable
     {
         [Key]
         public Guid Id { get; set; }
@@ -56,26 +56,24 @@
 
         // This is a bit hardcore to achieve... Skipping for now
 
-        ///// <inheritdoc />
-        //[Required]
-        //public DateTime CreatedDateTimeUtc { get; set; }
+        /// <inheritdoc />
+        [Required]
+        public DateTime CreatedDateTimeUtc { get; set; }
 
-        ///// <inheritdoc />
-        //[Required]
-        //public Guid CreatedBy { get; set; }
+        /// <inheritdoc />
+        [Required]
+        public Guid CreatedBy { get; set; }
 
-        ///// <inheritdoc />
-        //public Guid? LastModifiedBy { get; set; }
+        /// <inheritdoc />
+        public Guid? LastModifiedBy { get; set; }
 
-        ///// <inheritdoc />
-        //public DateTime? ModifiedDateTimeUtc { get; set; }
+        /// <inheritdoc />
+        public DateTime? ModifiedDateTimeUtc { get; set; }
 
         //[ForeignKey(nameof(CreatedBy))]
-        //[InverseProperty(nameof(Id))]
         //public virtual AspNetUser Creator { get; set; }
 
         //[ForeignKey(nameof(LastModifiedBy))]
-        //[InverseProperty(nameof(Id))]
         //public virtual AspNetUser LastEditor { get; set; }
     }
 }

@@ -51,12 +51,9 @@
         public string OrderXML;
 
 
-        [DataType(@"date2")]
         public DateTime SentDateTimeUtc;
 
-        [DataType(@"date2")]
         public DateTime DateCreatedUtc { get; set; }
-
 
 
         public virtual ICollection<OrderLine> OrderLines { get; set; }
