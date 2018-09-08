@@ -179,9 +179,9 @@
       <Project>{9F067CC8-9D8E-4764-94F6-6EEF978BFF75}</Project>
       <Name>FileStorageService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Services\LeadService\LeadService.csproj">
+    <ProjectReference Include="..\Services\LeadService\CustomerCaseService.csproj">
       <Project>{E01278FC-70A6-4C0E-A613-94FBCA2465B4}</Project>
-      <Name>LeadService</Name>
+      <Name>CustomerCaseService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

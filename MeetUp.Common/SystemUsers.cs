@@ -16,5 +16,7 @@
         public static Guid OrderFormService => new Guid(@"{F6E4F96C-1855-4276-98BB-1FBDCDEF911A}");
 
         public static Guid EmailingService => new Guid(@"{1617B50F-71A6-4ACD-8365-434C5A8AE84F}");
+
+        public static Guid CustomerCaseService => new Guid(@"{D5F5B99C-5CD0-433C-83ED-D6C4A52C9289}");
     }
 }

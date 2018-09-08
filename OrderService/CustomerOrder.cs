@@ -13,7 +13,7 @@
 
     using HtmlAgilityPack;
 
-    using LeadService;
+    using CustomerCaseService;
 
     using Mandrill;
 
@@ -37,21 +37,21 @@
         private readonly IMailMessageService _mailMessageService;
         private readonly ICustomerOrderService _customerOrderService;
         private readonly IMailAttachmentService _mailAttachmentService;
-        private readonly ICustomerLeadStatusService _customerLeadStatusService;
+        private readonly ICustomerCaseService _customerCaseService;
 
         #endregion
 
         #region Constructors
 
         public CustomerOrder(IOrderFormService formService, ICustomerOrderService customerOrderService, ISupplierService supplierService,
-            IMailMessageService mailMessageService, IFileStore fileStore, IMailAttachmentService mailAttachmentService, ICustomerLeadStatusService customerLeadStatusService)
+            IMailMessageService mailMessageService, IFileStore fileStore, IMailAttachmentService mailAttachmentService, ICustomerCaseService customerCaseService)
         {
             _fileStore = fileStore;
             _supplierService = supplierService;
             _mailMessageService = mailMessageService;
             _customerOrderService = customerOrderService;
             _mailAttachmentService = mailAttachmentService;
-            _customerLeadStatusService = customerLeadStatusService;
+            this._customerCaseService = customerCaseService;
             _formService = formService;
         }
 
@@ -118,7 +118,7 @@
                             }
                         }
 
-                        var response = SaveLeadStatus(customerOrder.ForSupplierId, customerOrder.FromCustomerId, customerOrder.FromDepartmentId, user.Id, supplierEmployeeLimitForOrder, customerOrder.Id);
+                        var response = this.SaveCaseStatus(customerOrder.ForSupplierId, customerOrder.FromCustomerId, customerOrder.FromDepartmentId, user.Id, supplierEmployeeLimitForOrder, customerOrder.Id);
                         if (response != null && response.IsSuccess)
                         {
                             var emailHtmlBody = "";
@@ -138,13 +138,13 @@
                                 //Creating Child Node of the Key
                                 XmlElement childKey = xmlDoc.CreateElement("Key");
                                 //childKey.Attributes.Append(xmlDoc.CreateAttribute("name", "trackTid"));
-                                childKey.InnerText = "TrackingLeadId";
+                                childKey.InnerText = "CaseId";
 
                                 fieldNode.AppendChild(childKey);
 
                                 //Creating Child Node of the Value
                                 XmlElement childValue = xmlDoc.CreateElement("Value");
-                                childValue.InnerText = response.TrackingLeadId.ToString();
+                                childValue.InnerText = response.CaseId.ToString();
 
                                 fieldNode.AppendChild(childValue);
 
@@ -154,7 +154,7 @@
                             else
                             {
                                 Logger.Info($"Orders# {customerOrder.Id} = is XML");
-                                emailHtmlBody = _formService.ConvertToHTML(customerOrder.OrderXML, response.TrackingLeadId, customerOrder.Id).Message;
+                                emailHtmlBody = _formService.ConvertToHTML(customerOrder.OrderXML, response.CaseId, customerOrder.Id).Message;
                             }
 
                             Logger.Info("Orders# {0} HTML = " + emailHtmlBody, customerOrder.Id);
@@ -168,7 +168,7 @@
                                 var nodes = tbl.SelectNodes("tr/td");
                                 foreach (var node in nodes)
                                 {
-                                    if (node.InnerText.Contains(response.TrackingLeadId.ToString()))
+                                    if (node.InnerText.Contains(response.CaseId.ToString()))
                                     {
                                         node.Attributes.Append("name", "trackTid");
                                     }
@@ -192,7 +192,7 @@
                                 ////get email attachments
 
                                 MailMessageResponse message = SaveMailMessage(user.Id, supplier.Name, emailSubject,
-                                    emailHtmlBody, user.InternalEmail, recipientEmail, response.TrackingLeadId,
+                                    emailHtmlBody, user.InternalEmail, recipientEmail, response.CaseId,
                                     customerOrder.FromCustomerId, customerOrder.FromDepartmentId);
                                 if (customerOrder.CustomerOrderAttachments.Count > 0)
                                 {
@@ -206,7 +206,7 @@
 
                                 var html = _formService.GetOrderQuestionsHtml(customerOrder.Id);
 
-                                SendOrderToPrimaryEmail(user, emailSubject, html, response.TrackingLeadId,
+                                SendOrderToPrimaryEmail(user, emailSubject, html, response.CaseId,
                                     supplier.Name, attachments, customerOrder.Customer.ChannelId.ToString(),
                                     customerOrder.FromCustomerId, customerOrder.FromDepartmentId,
                                     customerOrder.CustomerOrderAttachments);
@@ -215,7 +215,7 @@
                             {
                                 MailMessageResponse message = SaveMailMessage(user.Id, supplier.Name, emailSubject,
                                     emailHtmlBody, user.InternalEmail,
-                                    supplier.InternalSupportEmailForSpecialSituations, response.TrackingLeadId,
+                                    supplier.InternalSupportEmailForSpecialSituations, response.CaseId,
                                     customerOrder.FromCustomerId, customerOrder.FromDepartmentId);
                                 if (customerOrder.CustomerOrderAttachments.Count > 0)
                                 {
@@ -230,7 +230,7 @@
 
                                 var html = _formService.GetOrderQuestionsHtml(customerOrder.Id);
 
-                                SendOrderToPrimaryEmail(user, emailSubject, html, response.TrackingLeadId,
+                                SendOrderToPrimaryEmail(user, emailSubject, html, response.CaseId,
                                     supplier.Name, attachments, customerOrder.Customer.ChannelId.ToString(),
                                     customerOrder.FromCustomerId, customerOrder.FromDepartmentId,
                                     customerOrder.CustomerOrderAttachments);
@@ -257,30 +257,28 @@
 
         #region private method
 
-        private CustomerLeadServiceResponse SaveLeadStatus(int supplierId, int customerId, int departmentId, Guid userId, bool supplierEmployeeLimitForOrder, Guid orderId)
+        private CustomerCaseServiceResponse SaveCaseStatus(int supplierId, int customerId, int departmentId, Guid userId, bool supplierEmployeeLimitForOrder, Guid orderId)
         {
-            CustomerLeadStatus leadStatus = new CustomerLeadStatus
+            CustomerCase @case = new CustomerCase
             {
                 ForSupplierId = supplierId,
                 FromCustomerId = customerId,
                 FromDepartmentId = departmentId,
                 FromUserId = userId,
                 OrderId = orderId,
-                CreatedBy = this.ServiceId, // not directly by user, disputable 
-                CreatedDateTimeUtc = DateTime.UtcNow
+                Tracking = EntityTracker.StartTracking(this.ServiceId) // not directly by user, disputable 
             };
 
-            CustomerLeadStatusDetail leadDetail = new CustomerLeadStatusDetail
+            CustomerCaseStatusEntry caseEntry = new CustomerCaseStatusEntry
             {
-                LeadStatus = (supplierEmployeeLimitForOrder) ? LeadStatus.PendingSupplier : LeadStatus.PendingInternal,
-                UserComments = (supplierEmployeeLimitForOrder) ? @"Waiting for Supplier response." : @"Waiting for Support response. Lead has been sent to Support.",
-                CreatedBy = this.ServiceId, // not directly by user, disputable 
-                CreatedDateTimeUtc = DateTime.UtcNow
+                Status = (supplierEmployeeLimitForOrder) ? CaseStatus.PendingSupplier : CaseStatus.PendingInternal,
+                UserComments = (supplierEmployeeLimitForOrder) ? @"Waiting for Supplier response." : @"Waiting for Support response. Customer-Case has been sent to Support.",
+                Tracking = EntityTracker.StartTracking(this.ServiceId) // not directly by user, disputable 
             };
 
-            leadStatus.CustomerLeadStatusDetails.Add(leadDetail);
+            @case.CaseHistory.Add(caseEntry);
 
-            return _customerLeadStatusService.SaveCustomerLead(leadStatus);
+            return this._customerCaseService.SaveCustomerCase(@case);
         }
 
         private Boolean SendEmail(AspNetUser user, string message, string DestinationEmail, string channelId, string SenderEmail, LanguageCode culture, string RecipientName, string SenderName, List<email_attachment> attachmentList)
@@ -308,12 +306,12 @@
             return true;
         }
 
-        public Boolean ResendEmail(List<int> leadIds)
+        public Boolean ResendEmail(List<int> caseIds)
         {
-            string targetemail = "mij@yopmail.com";
-            foreach (var leadid in leadIds)
+            string targetemail = "dev-test@yopmail.com";
+            foreach (var caseId in caseIds)
             {
-                List<MailMessage> messages = _mailMessageService.GetParentLeadMessage(leadid);
+                List<MailMessage> messages = _mailMessageService.GetParentCaseMessage(caseId);
                 MailMessage mesg = messages.FirstOrDefault(p => p.DisplayName.Equals("Circle K"));
 
                 SendEmail(messages.FirstOrDefault().AspNetUser, messages.FirstOrDefault().Body, targetemail, messages.FirstOrDefault().Customer.ChannelId.ToString(),
@@ -323,7 +321,7 @@
             return true;
         }
 
-        private void SendOrderToPrimaryEmail(AspNetUser user, string subject, string body, int leadId, string supplier, List<email_attachment> attachmentList, string channelId, int customerId, int deptId, ICollection<CustomerOrderAttachment> customer_Order_Attachment)
+        private void SendOrderToPrimaryEmail(AspNetUser user, string subject, string body, int caseId, string supplier, List<email_attachment> attachmentList, string channelId, int customerId, int deptId, ICollection<CustomerOrderAttachment> customer_Order_Attachment)
         {
             try
             {
@@ -360,13 +358,12 @@
                 {
                     CustomerId = customerId,
                     DepartmentId = deptId,
-                    LeadTrackingId = leadId,
+                    CauseTrackingId = caseId,
                     Kind = MessageKind.Received,
                     ToAddress = user.Email,
                     UserId = user.Id,
                     HideFromUser = true,
-                    CreatedBy = this.ServiceId,
-                    CreatedDateTimeUtc = DateTime.UtcNow
+                    Tracking = EntityTracker.StartTracking(this.ServiceId) // not directly by user, disputable 
                 };
 
                 _mailMessageService.SaveMailMessage(mail, slug, channelId, emailContents);
@@ -383,7 +380,7 @@
             }
         }
 
-        private MailMessageResponse SaveMailMessage(Guid userId, string name, string subject, string message, string senderEmail, string destinationEmail, int leadTrackingId, int companyId, int deptId)
+        private MailMessageResponse SaveMailMessage(Guid userId, string name, string subject, string message, string senderEmail, string destinationEmail, int caseId, int companyId, int deptId)
         {
             MailMessage mailMessage = new MailMessage
             {
@@ -393,15 +390,14 @@
                 ToAddress = destinationEmail,
                 Subject = subject,
                 Body = message,
-                LeadTrackingId = leadTrackingId,
+                CauseTrackingId = caseId,
                 Status = MessageStatus.Read,
                 CustomerId = companyId,
                 DepartmentId = deptId,
                 Kind = MessageKind.Sent,
                 HideFromUser = true,
                 Type = MessageType.Order,
-                CreatedBy = this.ServiceId,
-                CreatedDateTimeUtc = DateTime.UtcNow
+                Tracking = EntityTracker.StartTracking(this.ServiceId) // not directly by user, disputable 
             };
 
             return _mailMessageService.SaveMailMessage(mailMessage);
@@ -457,8 +453,7 @@
                     FileUrl = item.FileURL,
                     FilePath = item.FilePath,
                     MimeType = item.MimeType,
-                    CreatedDateTimeUtc = DateTime.UtcNow,
-                    CreatedBy = this.ServiceId
+                    Tracking = EntityTracker.StartTracking(this.ServiceId) // not directly by user, disputable 
                 };
 
                 _mailAttachmentService.SaveAttachemnts(attachment);

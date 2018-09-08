@@ -27,6 +27,11 @@
 
         public static string GetLanguageCodeString(this LanguageCode code)
         {
+            if (code == LanguageCode.Unknown)
+            {
+                return null;
+            }
+
             return Codes[code];
         }
 

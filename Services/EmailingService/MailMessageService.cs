@@ -75,9 +75,9 @@
             };
         }
 
-        public List<MailMessage> GetParentLeadMessage(int trackingId)
+        public List<MailMessage> GetParentCaseMessage(int trackingId)
         {
-            return _mailMessageRepository.All.Where(i => i.LeadTrackingId == trackingId && i.ParentMessageId == null).ToList();
+            return _mailMessageRepository.All.Where(i => i.CauseTrackingId == trackingId && i.ParentMessageId == null).ToList();
         }
 
         public MailMessageResponse SaveMailMessage(MailMessage model, string template, string channelId, Dictionary<string, string> data)

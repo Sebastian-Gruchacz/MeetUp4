@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorageService", "Servi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetUp.Common", "MeetUp.Common\MeetUp.Common.csproj", "{32FFF58E-3660-409C-99C8-D40EE69ED61D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadService", "Services\LeadService\LeadService.csproj", "{E01278FC-70A6-4C0E-A613-94FBCA2465B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerCaseService", "Services\LeadService\CustomerCaseService.csproj", "{E01278FC-70A6-4C0E-A613-94FBCA2465B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreServiceTests", "StoreServiceTests\StoreServiceTests.csproj", "{17B82898-6214-4AE3-A819-DE61A6C65D9F}"
 EndProject

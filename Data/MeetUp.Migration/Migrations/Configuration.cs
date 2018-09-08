@@ -23,18 +23,27 @@ namespace MeetUp.Migration.Migrations
 
             // https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/migrations-and-deployment-with-the-entity-framework-in-an-asp-net-mvc-application#set-up-the-seed-method
 
-            context.AspNetUsers.AddOrUpdate(m => m.Id, // used to determine whether entity already exists, without overwriting it. Good if structure changes.
+            CreateSystemUser(context, SystemUsers.Migrator, nameof(SystemUsers.Migrator)); // used to determine whether entity already exists, without overwriting it. Good if structure changes.
+            CreateSystemUser(context, SystemUsers.OrderService, nameof(SystemUsers.OrderService));
+            CreateSystemUser(context, SystemUsers.EmailingService, nameof(SystemUsers.EmailingService));
+            CreateSystemUser(context, SystemUsers.OrderFormService, nameof(SystemUsers.OrderFormService));
+            CreateSystemUser(context, SystemUsers.CustomerCaseService, nameof(SystemUsers.CustomerCaseService));
+        }
+
+        private static void CreateSystemUser(MeetupDbContext context, Guid serviceId, string serviceName)
+        {
+            context.AspNetUsers.AddOrUpdate(
+                m => m.Id,
                 new AspNetUser
                 {
-                    Id = SystemUsers.Migrator,
-                    FirstName = nameof(SystemUsers.Migrator),
+                    Id = serviceId,
+                    FirstName = serviceName,
                     LastName = nameof(SystemUsers),
-                    Email = $"{nameof(SystemUsers.Migrator).ToLower()}@sysusers.internal",
-                    InternalEmail = null, // not possible to email him
+                    Email = $"{serviceName.ToLower()}@sysusers.internal", // must be unique, and better conform to email format
+                    InternalEmail = $"#ERR_{serviceName}#", // not possible to email sys-users, yet must be unique, conform or not?
                     IsSystemUser = true,
                     LanguageCode = LanguageCode.English,
-                    CreatedBy = SystemUsers.Migrator,
-                    CreatedDateTimeUtc = DateTime.UtcNow
+                    Tracking = EntityTracker.StartTracking(SystemUsers.Migrator)
                 });
         }
     }

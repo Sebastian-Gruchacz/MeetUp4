@@ -37,26 +37,9 @@
         [Index("UIX_InternaEmail", 1, IsUnique = true)]
         public string InternalEmail { get; set; }
 
-        /// <inheritdoc />
-        [Required]
-        public Guid CreatedBy { get; set; }
-
-        /// <inheritdoc />
-        [Required]
-        public DateTime CreatedDateTimeUtc { get; set; }
-
-        /// <inheritdoc />
-        public Guid? LastModifiedBy { get; set; }
-
-        /// <inheritdoc />
-        public DateTime? ModifiedDateTimeUtc { get; set; }
-
-        [ForeignKey(nameof(CreatedBy))]
-        public virtual AspNetUser Creator { get; set; }
-
-        [ForeignKey(nameof(LastModifiedBy))]
-        public virtual AspNetUser LastEditor { get; set; }
-
         public virtual ICollection<UserCustomerRole> UserRolesInCustomers { get; set; }
+
+        /// <inheritdoc />
+        public EntityTracker Tracking { get; set; }
     }
 }

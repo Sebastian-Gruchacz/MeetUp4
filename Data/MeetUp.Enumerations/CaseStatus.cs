@@ -1,6 +1,6 @@
 ﻿namespace MeetUp.Enumerations
 {
-    public static class LeadStatus
+    public static class CaseStatus
     {
         public static string PendingSupplier = "Pending-supplier";
         public static string PendingMember = "Pending-member";

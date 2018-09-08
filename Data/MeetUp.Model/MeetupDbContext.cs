@@ -63,9 +63,9 @@
 
         public virtual DbSet<UserCustomerRole> UserCustomerRoles { get; set; }
 
-        public virtual DbSet<CustomerLeadStatus> CustomerLeadStatuses { get; set; }
+        public virtual DbSet<CustomerCase> CustomerCases { get; set; }
 
-        public virtual DbSet<CustomerLeadStatusDetail> CustomerLeadStatusDetails { get; set; }
+        public virtual DbSet<CustomerCaseStatusEntry> CustomerCaseHistoryLogs { get; set; }
 
 
         // ... more entities come here ...

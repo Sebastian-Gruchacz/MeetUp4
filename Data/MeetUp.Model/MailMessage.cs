@@ -3,10 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Diagnostics.CodeAnalysis;
-
-    using Common;
 
     using Enumerations;
 
@@ -49,7 +46,7 @@
 
         public int? DepartmentId { get; set; }
 
-        public int LeadTrackingId { get; set; }
+        public int CauseTrackingId { get; set; }
 
         public Guid? UserId { get; set; }
 
@@ -63,26 +60,9 @@
 
         public Guid? ParentMessageId { get; set; }
 
-        /// <inheritdoc />
-        [Required]
-        public Guid CreatedBy { get; set; }
-
-        /// <inheritdoc />
-        [Required]
-        public DateTime CreatedDateTimeUtc { get; set; }
-
-        /// <inheritdoc />
-        public Guid? LastModifiedBy { get; set; }
-
-        /// <inheritdoc />
-        public DateTime? ModifiedDateTimeUtc { get; set; }
-
-        [ForeignKey(nameof(CreatedBy))]
-        public virtual AspNetUser Creator { get; set; }
-
-        [ForeignKey(nameof(LastModifiedBy))]
-        public virtual AspNetUser LastEditor { get; set; }
-
         public virtual ICollection<MailAttachment> Attachments { get; set; }
+
+        /// <inheritdoc />
+        public EntityTracker Tracking { get; set; }
     }
 }

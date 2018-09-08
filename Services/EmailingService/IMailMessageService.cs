@@ -19,7 +19,7 @@
         /// <param name="leadid"></param>
         /// <returns></returns>
         /// <remarks>Yes, name of the method is wrong.</remarks>
-        List<MailMessage> GetParentLeadMessage(int leadid);
+        List<MailMessage> GetParentCaseMessage(int leadid);
 
         /// <summary>
         /// Yes, another was yo save message into DB, this time outgoing message...

@@ -3,7 +3,7 @@
     using MeetUp.Common;
     using MeetUp.Model;
 
-    public interface ICustomerLeadStatusRepository : IRepository<CustomerLeadStatus>
+    public interface ICustomerCaseRepository : IRepository<CustomerCase>
     {
     }
 }

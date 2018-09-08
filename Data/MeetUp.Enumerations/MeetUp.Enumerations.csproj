@@ -44,7 +44,7 @@
     <Compile Include="Channel.cs" />
     <Compile Include="LanguageCode.cs" />
     <Compile Include="LanguageExtensions.cs" />
-    <Compile Include="LeadStatus.cs" />
+    <Compile Include="CaseStatus.cs" />
     <Compile Include="MessageKind.cs" />
     <Compile Include="MessageStatus.cs" />
     <Compile Include="MessageType.cs" />

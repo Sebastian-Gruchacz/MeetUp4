@@ -61,6 +61,10 @@
     <Compile Include="Migrations\201809060726558_ModelUpdate.Designer.cs">
       <DependentUpon>201809060726558_ModelUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809081507360_TrackingRedesign.cs" />
+    <Compile Include="Migrations\201809081507360_TrackingRedesign.Designer.cs">
+      <DependentUpon>201809081507360_TrackingRedesign.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -94,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809060726558_ModelUpdate.resx">
       <DependentUpon>201809060726558_ModelUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809081507360_TrackingRedesign.resx">
+      <DependentUpon>201809081507360_TrackingRedesign.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -58,8 +58,8 @@
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
     <Compile Include="ClassicRepository.cs" />
-    <Compile Include="CustomerLeadStatusRepository.cs" />
-    <Compile Include="ICustomerLeadStatusRepository.cs" />
+    <Compile Include="CustomerCaseRepository.cs" />
+    <Compile Include="ICustomerCaseRepository.cs" />
     <Compile Include="IMailAttachmentRepository.cs" />
     <Compile Include="IMailMessageRepository.cs" />
     <Compile Include="ExtensibleOrderRepository.cs" />
