@@ -49,6 +49,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MigrationExtensions.cs" />
+    <Compile Include="Migrations\201809051944193_InitMigrationUser.cs" />
+    <Compile Include="Migrations\201809051944193_InitMigrationUser.Designer.cs">
+      <DependentUpon>201809051944193_InitMigrationUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809052017462_LockUsersTable.cs" />
+    <Compile Include="Migrations\201809052017462_LockUsersTable.Designer.cs">
+      <DependentUpon>201809052017462_LockUsersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809060726558_ModelUpdate.cs" />
+    <Compile Include="Migrations\201809060726558_ModelUpdate.Designer.cs">
+      <DependentUpon>201809060726558_ModelUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809081507360_TrackingRedesign.cs" />
+    <Compile Include="Migrations\201809081507360_TrackingRedesign.Designer.cs">
+      <DependentUpon>201809081507360_TrackingRedesign.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,6 +73,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\MeetUp.Common\MeetUp.Common.csproj">
+      <Project>{32FFF58E-3660-409C-99C8-D40EE69ED61D}</Project>
+      <Name>MeetUp.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MeetUp.Enumerations\MeetUp.Enumerations.csproj">
       <Project>{d5600334-8bbe-4d27-a0d3-f63914a04ce4}</Project>
       <Name>MeetUp.Enumerations</Name>
@@ -68,6 +88,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201809051944193_InitMigrationUser.resx">
+      <DependentUpon>201809051944193_InitMigrationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809052017462_LockUsersTable.resx">
+      <DependentUpon>201809052017462_LockUsersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809060726558_ModelUpdate.resx">
+      <DependentUpon>201809060726558_ModelUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809081507360_TrackingRedesign.resx">
+      <DependentUpon>201809081507360_TrackingRedesign.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

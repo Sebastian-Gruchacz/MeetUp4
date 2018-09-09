@@ -3,13 +3,19 @@
     using System;
     using System.Collections.Generic;
     using System.Configuration;
-    using System.IO;
 
     using Mandrill;
     using Mandrill.Models;
 
+    using MeetUp.Enumerations;
+
     using NLog;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>This class definitely breaks SRP, shall be splitted into one responsible for mail sending and one regarding template management.
+    /// Then each of them is a separate story for improvement: strategies, data-driven, proxy, etc...</remarks>
     public class EmailProvider : IEmailProvider
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
@@ -19,7 +25,7 @@
         private string _fromAddress = "";
         private string _subject = "";
         private string _ccAddress = "";
-        private string _attachment = "";
+        private readonly string _attachment = "";
         private int _channelId;
 
         #region Public methods
@@ -31,12 +37,19 @@
 
         public EmailProvider(string channelId) : this()
         {
-            this._channelId = Convert.ToInt32(channelId);
+            _channelId = Convert.ToInt32(channelId);
         }
 
+        /// <summary>
+        /// Overwrites channel pre-selected for EmaiLSendinmg
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <remarks>This has been done so one do not have to pass this in the constructor, so the whole class can be Injected. 
+        /// "Funny" thing is, that it's totally not needed - it's not part of email sending but only template selection. 
+        /// And should not be default, Should be always explicitly passed to TempalatesManager.</remarks>
         public void SetChannelId(int channelId)
         {
-            this._channelId = channelId;
+            _channelId = channelId;
         }
 
         public TemplateInfo GetTemplateInfo(string slugId)
@@ -64,245 +77,6 @@
             return null;
         }
 
-        public ComplexResult Send(string targetEmail, Dictionary<string, string> payload, string templateSlugId)
-        {
-            try
-            {
-                List<EmailAddress> toEmailAddresses = new List<EmailAddress>();
-
-                EmailAddress toEmailAddress = new EmailAddress();
-                toEmailAddress.email = targetEmail;
-
-                toEmailAddresses.Add(toEmailAddress);
-
-                if (payload.TryGetValue("cc", out this._ccAddress))
-                {
-                    EmailAddress ccEmailAddress = new EmailAddress();
-                    ccEmailAddress.email = this._ccAddress;
-                    ccEmailAddress.type = "cc";
-
-                    toEmailAddresses.Add(ccEmailAddress);
-                }
-
-                EmailMessage emailMessage = new EmailMessage();
-                emailMessage.to = toEmailAddresses;
-                //   emailMessage.merge_language = "handlebars";
-                emailMessage.merge = true;
-
-                foreach (KeyValuePair<string, string> templateContent in payload)
-                {
-                    emailMessage.AddGlobalVariable(templateContent.Key, templateContent.Value);
-                }
-
-                if (payload.TryGetValue("from", out this._fromAddress))
-                {
-                    emailMessage.from_email = this._fromAddress;
-                }
-                if (payload.TryGetValue("from_name", out this._displayName))
-                {
-                    emailMessage.from_name = this._displayName;
-                }
-                if (payload.TryGetValue("subject", out this._subject))
-                {
-                    emailMessage.subject = this._subject;
-                }
-
-                if (payload.TryGetValue("attachment", out this._attachment))
-                {
-                    emailMessage.attachments = new List<email_attachment>();
-                    email_attachment mailAttachment = new email_attachment();
-                    if (this._attachment != null)
-                    {
-                        mailAttachment.content = this._attachment;
-                        mailAttachment.name = "File.txt";
-                        mailAttachment.type = "text/txt";
-                        ((List<email_attachment>)emailMessage.attachments).Add(mailAttachment);
-                    }
-                }
-
-                List<EmailResult> results = _api.SendMessage(emailMessage, templateSlugId, null);
-
-                if (results.Count > 0)
-                {
-
-                    foreach (EmailResult result in results)
-                    {
-                        if (result.Status == EmailResultStatus.Sent || result.Status == EmailResultStatus.Queued)
-                            return true;
-                    }
-
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Logger.Fatal(ex);
-                return false;
-            }
-        }
-
-        public ComplexResult Send(string targetEmail, Dictionary<string, string> payload, string templateSlugId, List<email_attachment> attachmentList)
-        {
-            try
-            {
-                if (payload == null)
-                {
-                    payload = new Dictionary<string, string>();
-                }
-
-                List<EmailAddress> toEmailAddresses = new List<EmailAddress>();
-
-                EmailAddress toEmailAddress = new EmailAddress();
-                toEmailAddress.email = targetEmail;
-
-                toEmailAddresses.Add(toEmailAddress);
-
-                if (payload.TryGetValue("cc", out this._ccAddress))
-                {
-                    EmailAddress ccEmailAddress = new EmailAddress();
-                    ccEmailAddress.email = this._ccAddress;
-                    ccEmailAddress.type = "cc";
-
-                    toEmailAddresses.Add(ccEmailAddress);
-                }
-
-                EmailMessage emailMessage = new EmailMessage();
-                emailMessage.to = toEmailAddresses;
-                //   emailMessage.merge_language = "handlebars";
-                emailMessage.merge = true;
-
-                foreach (KeyValuePair<string, string> templateContent in payload)
-                {
-                    emailMessage.AddGlobalVariable(templateContent.Key, templateContent.Value);
-                }
-
-                if (payload.TryGetValue("from", out this._fromAddress))
-                {
-                    emailMessage.from_email = this._fromAddress;
-                }
-                if (payload.TryGetValue("from_name", out this._displayName))
-                {
-                    emailMessage.from_name = this._displayName;
-                }
-                if (payload.TryGetValue("subject", out this._subject))
-                {
-                    emailMessage.subject = this._subject;
-                }
-
-                if (attachmentList != null && attachmentList.Count > 0)
-                {
-                    emailMessage.attachments = attachmentList;
-                }
-
-                List<EmailResult> results = _api.SendMessage(emailMessage, templateSlugId, null);
-
-                if (results.Count > 0)
-                {
-                    // TODO: partial success ?!?!
-                    foreach (EmailResult result in results)
-                    {
-                        if (result.Status == EmailResultStatus.Sent || result.Status == EmailResultStatus.Queued)
-                            return true;
-                    }
-
-                }
-
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Logger.Fatal(ex);
-                return ex;
-            }
-        }
-
-        public ComplexResult Send(string targetEmail, Dictionary<string, string> payload, EmailType emailType)
-        {
-            try
-            {
-                List<EmailAddress> toEmailAddresses = new List<EmailAddress>();
-                //List<TemplateContent> contents = new List<TemplateContent>();
-
-                EmailAddress toEmailAddress = new EmailAddress();
-                toEmailAddress.email = targetEmail;
-
-                toEmailAddresses.Add(toEmailAddress);
-
-                if (payload.TryGetValue("cc", out this._ccAddress))
-                {
-                    EmailAddress ccEmailAddress = new EmailAddress();
-                    ccEmailAddress.email = this._ccAddress;
-                    ccEmailAddress.type = "cc";
-
-                    toEmailAddresses.Add(ccEmailAddress);
-                }
-
-                EmailMessage emailMessage = new EmailMessage();
-                emailMessage.to = toEmailAddresses;
-
-                emailMessage.merge = true;
-
-                foreach (KeyValuePair<string, string> templateContent in payload)
-                {
-                    emailMessage.AddGlobalVariable(templateContent.Key, templateContent.Value);
-                }
-
-                if (payload.TryGetValue("from", out this._fromAddress))
-                {
-                    emailMessage.from_email = this._fromAddress;
-                }
-                if (payload.TryGetValue("from_name", out this._displayName))
-                {
-                    emailMessage.from_name = this._displayName;
-                }
-                if (payload.TryGetValue("subject", out this._subject))
-                {
-                    emailMessage.subject = this._subject;
-                }
-
-                if (payload.TryGetValue("attachment", out this._attachment))
-                {
-                    //AttachmentCollection
-                    emailMessage.attachments = new List<email_attachment>();
-                    email_attachment mailAttachment = new email_attachment();
-                    if (this._attachment != null)
-                    {
-                        mailAttachment.content = this._attachment;
-                        mailAttachment.name = "File.txt";
-                        mailAttachment.type = "text/txt";
-                        ((List<email_attachment>)emailMessage.attachments).Add(mailAttachment);
-                    }
-                }
-
-                //emailMessage.from_email = "info@customer.com";
-                //emailMessage.subject = "Test";
-
-                List<EmailResult> results = _api.SendMessage(emailMessage, this.GetTemplateName(emailType), null);
-
-                if (results.Count > 0)
-                {
-                    foreach (EmailResult result in results)
-                    {
-                        if (result.Status == EmailResultStatus.Sent || result.Status == EmailResultStatus.Queued)
-                            return true;
-                    }
-
-                }
-
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Logger.Fatal(ex);
-
-                var ms = ex.Message;
-                if (ex.InnerException != null)
-                    ms += ex.InnerException.Message;
-                File.AppendAllText("C:\\Logs\\EmailProvider.txt", ms);
-                return ex;
-            }
-        }
-
         #region send with Attachment
 
         public bool Send(string targetEmail, Dictionary<string, string> payload, EmailType emailType, byte[] byteArray)
@@ -315,10 +89,10 @@
 
             toEmailAddresses.Add(toEmailAddress);
 
-            if (payload.TryGetValue("cc", out this._ccAddress))
+            if (payload.TryGetValue("cc", out _ccAddress))
             {
                 EmailAddress ccEmailAddress = new EmailAddress();
-                ccEmailAddress.email = this._ccAddress;
+                ccEmailAddress.email = _ccAddress;
                 ccEmailAddress.type = "cc";
 
                 toEmailAddresses.Add(ccEmailAddress);
@@ -326,9 +100,9 @@
 
             EmailMessage emailMessage = new EmailMessage();
             emailMessage.to = toEmailAddresses;
-            if (payload.TryGetValue("subject", out this._subject))
+            if (payload.TryGetValue("subject", out _subject))
             {
-                emailMessage.subject = this._subject;
+                emailMessage.subject = _subject;
             }
             emailMessage.attachments = new List<email_attachment>();
             email_attachment mailAttachment = new email_attachment();
@@ -346,7 +120,7 @@
 
             //  emailMessage.from_email = FromAddress;
             //  emailMessage.subject = "Test";
-            List<EmailResult> results = _api.SendMessage(emailMessage, this.GetTemplateName(emailType), null);
+            List<EmailResult> results = _api.SendMessage(emailMessage, GetTemplateName(emailType), null);
 
 
             if (results.Count > 0)
@@ -375,10 +149,10 @@
 
                 toEmailAddresses.Add(toEmailAddress);
 
-                if (payload.TryGetValue("cc", out this._ccAddress))
+                if (payload.TryGetValue("cc", out _ccAddress))
                 {
                     EmailAddress ccEmailAddress = new EmailAddress();
-                    ccEmailAddress.email = this._ccAddress;
+                    ccEmailAddress.email = _ccAddress;
                     ccEmailAddress.type = "cc";
 
                     toEmailAddresses.Add(ccEmailAddress);
@@ -394,17 +168,17 @@
                     emailMessage.AddGlobalVariable(templateContent.Key, templateContent.Value);
                 }
 
-                if (payload.TryGetValue("from", out this._fromAddress))
+                if (payload.TryGetValue("from", out _fromAddress))
                 {
-                    emailMessage.from_email = this._fromAddress;
+                    emailMessage.from_email = _fromAddress;
                 }
-                if (payload.TryGetValue("from_name", out this._displayName))
+                if (payload.TryGetValue("from_name", out _displayName))
                 {
-                    emailMessage.from_name = this._displayName;
+                    emailMessage.from_name = _displayName;
                 }
-                if (payload.TryGetValue("subject", out this._subject))
+                if (payload.TryGetValue("subject", out _subject))
                 {
-                    emailMessage.subject = this._subject;
+                    emailMessage.subject = _subject;
                 }
 
                 if (attachmentList != null && attachmentList.Count > 0)
@@ -415,7 +189,7 @@
                 //emailMessage.from_email = "info@customer.com";
                 //emailMessage.subject = "Test";
 
-                List<EmailResult> results = _api.SendMessage(emailMessage, this.GetTemplateName(emailType), null);
+                List<EmailResult> results = _api.SendMessage(emailMessage, GetTemplateName(emailType), null);
 
 
                 if (results.Count > 0)
@@ -708,21 +482,21 @@
             }
         }
 
-        public EmailType GetTemplateType(string resource, string culture, int? myChannel = null)
+        public EmailType GetTemplateType(string resource, LanguageCode culture, int? myChannel = null)
         {
             if (myChannel != null)
-                this._channelId = (int)myChannel;
+                _channelId = (int)myChannel;
 
             switch (resource)
             {
                 #region Confirm
                 case "Confirm":
-                    switch (this._channelId)
+                    switch (_channelId)
                     {
                         case 1:
-                            switch (culture)
+                            switch (culture.GetLanguageCodeString())
                             {
-                                case "en-US":
+                                case @"en-US":                              // This is how whole method was...
                                     return EmailType.ChannelOneConfirmEn;
                                 default:
                                     return EmailType.ChannelOneConfirmDa;
@@ -730,7 +504,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:                  // now a bit improved
                                     return EmailType.ChannelTwoConfirmDA;
                                 default:
                                     return EmailType.ChannelTwoConfirmDA;
@@ -741,12 +515,12 @@
 
                 #region Reset
                 case "Reset":
-                    switch (this._channelId)
+                    switch (_channelId)
                     {
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneResetPasswordEn;
                                 default:
                                     return EmailType.ChannelOneResetPasswordDa;
@@ -754,7 +528,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoResetPasswordDA;
                                 default:
                                     return EmailType.ChannelTwoResetPasswordDA;
@@ -765,12 +539,12 @@
 
                 #region NewAssignUser
                 case "NewAssignUser":
-                    switch (this._channelId)
+                    switch (_channelId)
                     {
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneConfirmCategoryPersonEn;
                                 default:
                                     return EmailType.ChannelOneConfirmCategoryPersonDa;
@@ -778,7 +552,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoConfirmCategoryPersonDA;
                                 default:
                                     return EmailType.ChannelTwoConfirmCategoryPersonDA;
@@ -789,12 +563,12 @@
 
                 #region CustomerOrder
                 case "CustomerOrder":
-                    switch (this._channelId)
+                    switch (_channelId)
                     {
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneCustomerOrderEmailEn;
                                 default:
                                     return EmailType.ChannelOneCustomerOrderEmailDa;
@@ -802,7 +576,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoCustomerOrderEmailDA;
                                 default:
                                     return EmailType.ChannelTwoCustomerOrderEmailDA;
@@ -814,12 +588,12 @@
 
                 #region NewCompany
                 case "NewCompany":
-                    switch (this._channelId)
+                    switch (_channelId)
                     {
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneAdminOfNewCompanyEn;
                                 default:
                                     return EmailType.ChannelOneAdminOfNewCompanyDa;
@@ -827,7 +601,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoAdminOfNewCompanyDA;
                                 default:
                                     return EmailType.ChannelTwoAdminOfNewCompanyDA;
@@ -838,12 +612,12 @@
 
                 #region SupplierLoginRequest
                 case "SupplierLoginRequest":
-                    switch (this._channelId)
+                    switch (_channelId)
                     {
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneSupplierLoginRequestEn;
                                 default:
                                     return EmailType.ChannelOneSupplierLoginRequestDa;
@@ -851,7 +625,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoSupplierLoginRequestDA;
                                 default:
                                     return EmailType.ChannelTwoSupplierLoginRequestDA;
@@ -862,12 +636,12 @@
 
                 #region UserEmail
                 case "UserEmailCommunication":
-                    switch (this._channelId)
+                    switch (_channelId)
                     {
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneUserEmailEn;
                                 default:
                                     return EmailType.ChannelOneUserEmailDa;
@@ -875,7 +649,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoUserEmailDA;
                                 default:
                                     return EmailType.ChannelTwoUserEmailDA;
@@ -886,12 +660,12 @@
 
                 #region OfferRequestOrder
                 case "OfferRequestOrder":
-                    switch (this._channelId)
+                    switch (_channelId)
                     {
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneOfferRequestOrderEn;
                                 default:
                                     return EmailType.ChannelOneOfferRequestOrderDa;
@@ -899,7 +673,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoOfferRequestOrderEN;
                                 default:
                                     return EmailType.ChannelTwoOfferRequestOrderDA;
@@ -910,12 +684,12 @@
 
                 #region InviteUserInCompany
                 case "InviteUserInCompany":
-                    switch (this._channelId)
+                    switch (_channelId)
                     {
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneInviteUserInCompanyEn;
                                 default:
                                     return EmailType.ChannelOneInviteUserInCompanyDa;
@@ -923,7 +697,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoInviteUserInCompanyEN;
                                 default:
                                     return EmailType.ChannelTwoInviteUserInCompanyDA;
@@ -934,12 +708,12 @@
 
                 #region InviteUserInPlatform
                 case "InviteUserInPlatform":
-                    switch (this._channelId)
+                    switch (_channelId)
                     {
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneInviteUserInPlatformEn;
                                 default:
                                     return EmailType.ChannelOneInviteUserInPlatformDa;
@@ -947,7 +721,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoInviteUserInPlatformEN;
                                 default:
                                     return EmailType.ChannelTwoInviteUserInPlatformDA;
@@ -958,12 +732,12 @@
 
                 #region InviteUserInPlatform
                 case "UpdateUserInCompany":
-                    switch (this._channelId)
+                    switch (_channelId)
                     {
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneUpdateUserInCompnayEn;
                                 default:
                                     return EmailType.ChannelOneUpdateUserInCompanyDa;
@@ -971,7 +745,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoInviteUserInCompanyEN;
                                 default:
                                     return EmailType.ChannelTwoInviteUserInCompanyDA;
@@ -982,12 +756,12 @@
 
                 #region BonusLines
                 case "BonusLines":
-                    switch (this._channelId)
+                    switch (_channelId)
                     {
                         case 1:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelOneBonusLinesDa;
                                 default:
                                     return EmailType.ChannelOneBonusLinesDa;
@@ -995,7 +769,7 @@
                         case 12:
                             switch (culture)
                             {
-                                case "en-US":
+                                case LanguageCode.English:
                                     return EmailType.ChannelTwoBonusLinesDA;
                                 default:
                                     return EmailType.ChannelTwoBonusLinesDA;
@@ -1018,7 +792,7 @@
                     return EmailType.ChannelOneAdminNoInvitesUsersDa;
                     break;
 
-                #endregion
+                    #endregion
 
             }
 

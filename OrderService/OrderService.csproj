@@ -152,11 +152,12 @@
     <Compile Include="IOrderFormService.cs" />
     <Compile Include="ISupplierService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Helper\XSLTransformHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\MeetUp.BLL\MeetUp.BLL.csproj">
+    <ProjectReference Include="..\Data\MeetUp.BLL\MeetUp.DAL.csproj">
       <Project>{3020a898-ae1d-43c0-bc0f-d67fedb54c6f}</Project>
-      <Name>MeetUp.BLL</Name>
+      <Name>MeetUp.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Data\MeetUp.Enumerations\MeetUp.Enumerations.csproj">
       <Project>{D5600334-8BBE-4D27-A0D3-F63914A04CE4}</Project>
@@ -174,10 +175,22 @@
       <Project>{750BC88C-0B10-4E27-80CD-A46FB25E3265}</Project>
       <Name>EmailingService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Services\FileStorageService\FileStorageService.csproj">
+      <Project>{9F067CC8-9D8E-4764-94F6-6EEF978BFF75}</Project>
+      <Name>FileStorageService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\LeadService\CustomerCaseService.csproj">
+      <Project>{E01278FC-70A6-4C0E-A613-94FBCA2465B4}</Project>
+      <Name>CustomerCaseService</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Helper\XSLTOrderFile.xslt" />
+    <Content Include="Helper\XSLTOrderFileDanish.xslt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -8,7 +8,8 @@ namespace MeetUp.Model
     /// <summary>
     /// This is improved repository pattern to work with UnitOfWork
     /// </summary>
-    public static class OrderRepository
+    /// <remarks>Keep queries EF-compatible!</remarks>
+    public static class ExtensibleOrderRepository
     {
         public static IQueryable<Customer_Order> FromCustomer(this IQueryable<Customer_Order> orders, Customer customer)
         {
@@ -25,6 +26,12 @@ namespace MeetUp.Model
             return orders.Where(o => o.DateCreatedUtc < date);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orders"></param>
+        /// <returns></returns>
+        /// <remarks>WARN: Not unit-testable!</remarks>
         public static IQueryable<Customer_Order> WithOrderLines(this IQueryable<Customer_Order> orders)
         {
             return orders.Include(o => o.OrderLines);

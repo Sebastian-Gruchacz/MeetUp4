@@ -9,7 +9,6 @@
 
         public int SupplierId { get; set; }
 
-
         public bool SendOrderViaEmail { get; set; }
 
         /// <summary>

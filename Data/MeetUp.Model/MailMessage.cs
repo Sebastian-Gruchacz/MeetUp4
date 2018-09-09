@@ -8,7 +8,7 @@
     using Enumerations;
 
     [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")] // Creating default, empty collections for new entities
-    public partial class MailMessage
+    public partial class MailMessage : ITrackeable
     {
         public MailMessage()
         {
@@ -41,12 +41,12 @@
         public MessageType Type { get; set; }
 
         public MessageStatus Status { get; set; }
-        
+
         public int? CustomerId { get; set; }
 
         public int? DepartmentId { get; set; }
 
-        public int LeadTrackingId { get; set; }
+        public int CauseTrackingId { get; set; }
 
         public Guid? UserId { get; set; }
 
@@ -56,7 +56,13 @@
 
         public virtual Customer Customer { get; set; }
 
+        public DateTime SentUtcDateTime { get; set; }
+
+        public Guid? ParentMessageId { get; set; }
+
         public virtual ICollection<MailAttachment> Attachments { get; set; }
-        
+
+        /// <inheritdoc />
+        public EntityTracker Tracking { get; set; }
     }
 }

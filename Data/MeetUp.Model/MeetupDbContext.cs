@@ -2,6 +2,7 @@
 {
     using System.Data.Common;
     using System.Data.Entity;
+    using System.Data.Entity.ModelConfiguration.Conventions;
 
     using NLog;
 
@@ -19,7 +20,7 @@
 
         public MeetupDbContext(DbConnection connection) : base(connection, true)
         {
-            // Could potentially add more info from connection, but OFC be careful to not expose security-critical data like password...
+            // Could potentially debug some more info from connection, but OFC be careful to not expose security-critical data like password...
             Logger.Trace($"Regular context created for {connection.Database}");
         }
 
@@ -30,6 +31,13 @@
             base.Dispose(disposing);
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+        }
 
         public virtual DbSet<Customer_Order> CustomerOrders { get; set; }
 
@@ -55,7 +63,9 @@
 
         public virtual DbSet<UserCustomerRole> UserCustomerRoles { get; set; }
 
+        public virtual DbSet<CustomerCase> CustomerCases { get; set; }
 
+        public virtual DbSet<CustomerCaseStatusEntry> CustomerCaseHistoryLogs { get; set; }
 
 
         // ... more entities come here ...
