@@ -8,6 +8,10 @@
 
     using MeetUp.Common;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>NOTE: This entity really shall be named "User", yet I left this as track of creation process - clearly this entity came from Asp.Net template and remained names so. Well...</remarks>
     public partial class AspNetUser : ITrackeable
     {
         [Key]

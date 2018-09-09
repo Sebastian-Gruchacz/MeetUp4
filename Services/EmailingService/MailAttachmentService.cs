@@ -1,6 +1,6 @@
 ﻿namespace EmailingService
 {
-    using MeetUp.BLL;
+    using MeetUp.DAL;
     using MeetUp.Model;
 
     public class MailAttachmentService : IMailAttachmentService

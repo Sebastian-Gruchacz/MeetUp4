@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using MeetUp.BLL;
+    using MeetUp.DAL;
     using MeetUp.Enumerations;
     using MeetUp.Model;
 

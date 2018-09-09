@@ -1,4 +1,4 @@
-﻿namespace MeetUp.BLL
+﻿namespace MeetUp.DAL
 {
     using MeetUp.Common;
     using MeetUp.Model;

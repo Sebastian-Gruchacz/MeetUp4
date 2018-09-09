@@ -7,8 +7,8 @@
     <ProjectGuid>{3020A898-AE1D-43C0-BC0F-D67FEDB54C6F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MeetUp.BLL</RootNamespace>
-    <AssemblyName>MeetUp.BLL</AssemblyName>
+    <RootNamespace>MeetUp.DAL</RootNamespace>
+    <AssemblyName>MeetUp.DAL</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
-    <Compile Include="ClassicRepository.cs" />
+    <Compile Include="CrudExtensions.cs" />
     <Compile Include="CustomerCaseRepository.cs" />
     <Compile Include="ICustomerCaseRepository.cs" />
     <Compile Include="IMailAttachmentRepository.cs" />

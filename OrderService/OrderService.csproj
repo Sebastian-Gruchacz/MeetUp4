@@ -155,9 +155,9 @@
     <Compile Include="Helper\XSLTransformHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\MeetUp.BLL\MeetUp.BLL.csproj">
+    <ProjectReference Include="..\Data\MeetUp.BLL\MeetUp.DAL.csproj">
       <Project>{3020a898-ae1d-43c0-bc0f-d67fedb54c6f}</Project>
-      <Name>MeetUp.BLL</Name>
+      <Name>MeetUp.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Data\MeetUp.Enumerations\MeetUp.Enumerations.csproj">
       <Project>{D5600334-8BBE-4D27-A0D3-F63914A04CE4}</Project>

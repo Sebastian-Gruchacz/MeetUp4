@@ -8,6 +8,10 @@
 
     using MeetUp.Enumerations;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>NOTE: This name should really be refactored into simply "CustomerOrder", but that would conflict names with original service name. Left as training example.</remarks>
     [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")] // Creating default, empty collections for new entities
     public partial class Customer_Order
     {

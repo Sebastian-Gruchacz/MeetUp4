@@ -1,5 +1,9 @@
 ﻿namespace MeetUp.Common
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>The concept is fine, but why this is not generic? Another exerciser ;-)</remarks>
     public class ServiceResponse
     {
         public ServiceResponse()
@@ -17,6 +21,6 @@
 
         public string Message { get; set; }
 
-        public object Data { get; set; }
+        public object Data { get; set; } // TODO: made generic
     }
 }

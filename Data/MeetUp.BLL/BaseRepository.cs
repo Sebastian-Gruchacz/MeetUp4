@@ -1,4 +1,4 @@
-﻿namespace MeetUp.BLL
+﻿namespace MeetUp.DAL
 {
     using System;
     using System.Data.Entity;
@@ -100,6 +100,8 @@
             {
                 Logger.Fatal(e);
 
+                // TODO: fix evident duplicate...
+
                 foreach (var eve in e.EntityValidationErrors)
                 {
                     Logger.Fatal($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation errors:");
@@ -157,6 +159,8 @@
             catch (DbEntityValidationException e)
             {
                 Logger.Fatal(e);
+                
+                // TODO: another duplicate
 
                 foreach (var eve in e.EntityValidationErrors)
                 {

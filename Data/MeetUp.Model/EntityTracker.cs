@@ -3,7 +3,6 @@
     using System;
     using System.ComponentModel.DataAnnotations.Schema;
 
-
     [ComplexType]
     public partial class EntityTracker
     {

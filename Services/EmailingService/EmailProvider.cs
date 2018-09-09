@@ -11,6 +11,11 @@
 
     using NLog;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>This class definitely breaks SRP, shall be splitted into one responsible for mail sending and one regarding template management.
+    /// Then each of them is a separate story for improvement: strategies, data-driven, proxy, etc...</remarks>
     public class EmailProvider : IEmailProvider
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
@@ -35,6 +40,13 @@
             _channelId = Convert.ToInt32(channelId);
         }
 
+        /// <summary>
+        /// Overwrites channel pre-selected for EmaiLSendinmg
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <remarks>This has been done so one do not have to pass this in the constructor, so the whole class can be Injected. 
+        /// "Funny" thing is, that it's totally not needed - it's not part of email sending but only template selection. 
+        /// And should not be default, Should be always explicitly passed to TempalatesManager.</remarks>
         public void SetChannelId(int channelId)
         {
             _channelId = channelId;

@@ -24,6 +24,6 @@
 
         void Attach(T entity);
 
-        void SaveChanges();
+        void SaveChanges(); // This is so weak... Need Unit-of-Work
     }
 }

@@ -75,9 +75,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Data\MeetUp.BLL\MeetUp.BLL.csproj">
+    <ProjectReference Include="..\..\Data\MeetUp.BLL\MeetUp.DAL.csproj">
       <Project>{3020A898-AE1D-43C0-BC0F-D67FEDB54C6F}</Project>
-      <Name>MeetUp.BLL</Name>
+      <Name>MeetUp.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Data\MeetUp.Enumerations\MeetUp.Enumerations.csproj">
       <Project>{D5600334-8BBE-4D27-A0D3-F63914A04CE4}</Project>
