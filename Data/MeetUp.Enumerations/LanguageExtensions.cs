@@ -9,6 +9,7 @@
     public static class LanguageExtensions
     {
         // For better implementations see: https://github.com/jskeet/unconstrained-melody/blob/master/UnconstrainedMelody/EnumInternals.cs
+        // Or even better: https://github.com/TylerBrinkley/Enums.NET
 
         private static readonly Dictionary<LanguageCode, string> Codes = new Dictionary<LanguageCode, string>();
         private static readonly Dictionary<string, LanguageCode> Descsriptions = new Dictionary<string, LanguageCode>();
