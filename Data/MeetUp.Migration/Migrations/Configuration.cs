@@ -9,14 +9,14 @@ namespace MeetUp.Migration.Migrations
 
     using Model;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<MeetUp.Model.MeetupDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<MeetUp.Model.MeetUpDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(MeetUp.Model.MeetupDbContext context)
+        protected override void Seed(MeetUp.Model.MeetUpDbContext context)
         {
             // Used Seed only to add core Migrator user to the system, no need to run this check every update. 
             // Stupid, should be per migration.
@@ -30,7 +30,7 @@ namespace MeetUp.Migration.Migrations
             CreateSystemUser(context, SystemUsers.CustomerCaseService, nameof(SystemUsers.CustomerCaseService));
         }
 
-        private static void CreateSystemUser(MeetupDbContext context, Guid serviceId, string serviceName)
+        private static void CreateSystemUser(MeetUpDbContext context, Guid serviceId, string serviceName)
         {
             context.AspNetUsers.AddOrUpdate(
                 m => m.Id,

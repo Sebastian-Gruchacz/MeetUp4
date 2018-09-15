@@ -15,20 +15,27 @@
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Lazy<MeetupDbContext> _context;
+        private readonly Lazy<MeetUpDbContext> _context;
 
-
+        /// <summary>
+        /// .ctor
+        /// </summary>
+        /// <remarks>This is really bad - each repo has separate instance of context, cannot simple join data from different DbSets.</remarks>
         protected BaseRepository()
         {
-            _context = new Lazy<MeetupDbContext>(() => new MeetupDbContext());
+            _context = new Lazy<MeetUpDbContext>(() => new MeetUpDbContext());
         }
 
-        protected BaseRepository(MeetupDbContext context)
+        /// <summary>
+        /// Injection .ctor
+        /// </summary>
+        /// <remarks>This is slightly better, to be used with factory, but this has to be controlled by consumer code</remarks>
+        protected BaseRepository(MeetUpDbContext context)
         {
-            _context = new Lazy<MeetupDbContext>(() => context);
+            _context = new Lazy<MeetUpDbContext>(() => context);
         }
 
-        protected MeetupDbContext GetContext()
+        protected MeetUpDbContext GetContext()
         {
             return _context.Value;
         }
@@ -159,7 +166,7 @@
             catch (DbEntityValidationException e)
             {
                 Logger.Fatal(e);
-                
+
                 // TODO: another duplicate
 
                 foreach (var eve in e.EntityValidationErrors)

@@ -9,7 +9,7 @@ namespace MeetUp.Model
     /// This is improved repository pattern to work with UnitOfWork
     /// </summary>
     /// <remarks>Keep queries EF-compatible!</remarks>
-    public static class ExtensibleOrderRepository
+    public static class OrderRepository
     {
         public static IQueryable<Customer_Order> FromCustomer(this IQueryable<Customer_Order> orders, Customer customer)
         {

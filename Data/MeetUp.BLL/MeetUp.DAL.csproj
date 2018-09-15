@@ -56,13 +56,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseRepository.cs" />
-    <Compile Include="CrudExtensions.cs" />
     <Compile Include="CustomerCaseRepository.cs" />
     <Compile Include="ICustomerCaseRepository.cs" />
     <Compile Include="IMailAttachmentRepository.cs" />
     <Compile Include="IMailMessageRepository.cs" />
-    <Compile Include="ExtensibleOrderRepository.cs" />
+    <Compile Include="OrderRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +71,10 @@
     <ProjectReference Include="..\..\MeetUp.Common\MeetUp.Common.csproj">
       <Project>{32FFF58E-3660-409C-99C8-D40EE69ED61D}</Project>
       <Name>MeetUp.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MeetUp.DalBase\MeetUp.DalBase.csproj">
+      <Project>{EEDF0664-BE4D-4CA8-81FC-05D57447EE2D}</Project>
+      <Name>MeetUp.DalBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\MeetUp.Model\MeetUp.Model.csproj">
       <Project>{3629AC4C-CAA7-4BA2-A839-2FD28F1FF2E4}</Project>
