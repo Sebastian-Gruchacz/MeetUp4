@@ -37,8 +37,6 @@
 
         public DbSet<SupplierOrderPolicy> SupplierOrderPolicies => _context.SupplierOrderPolicies;
 
-        public DbSet<SupplierCaseLimits> SupplierCaseLimits => _context.SupplierCaseLimits;
-
         public DbSet<AspNetRole> AspNetRoles => _context.AspNetRoles;
 
         public DbSet<AspNetUser> AspNetUsers => _context.AspNetUsers;

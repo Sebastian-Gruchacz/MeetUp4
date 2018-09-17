@@ -58,7 +58,6 @@
     <Compile Include="OtherServices\ICustomerService.cs" />
     <Compile Include="OtherServices\IOrderFormHistoryRepository.cs" />
     <Compile Include="IOrderFormService.cs" />
-    <Compile Include="OtherServices\ISupplierCaseLimitsService.cs" />
     <Compile Include="OtherServices\ISupplierCustomerNumberRepository.cs" />
     <Compile Include="OtherServices\ISupplierService.cs" />
     <Compile Include="OtherServices\ITranslationsRepository.cs" />

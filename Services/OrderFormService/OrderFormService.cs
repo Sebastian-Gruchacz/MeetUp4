@@ -25,13 +25,10 @@
         private readonly IUserAccountService _accountService;
         private readonly ICustomerOrderService _customerOrderService;
         private readonly IOrderFormHistoryRepository _typeFormOrdersLogRepository;
-        private readonly ISupplierCaseLimitsService _supplierCaseLimitsService;
-        private readonly ISupplierCustomerNumberRepository _supplierCustomerNumber;
 
         public OrderFormService(ITranslationsRepository translationRepository, ISupplierService supplierService,
                ICustomerService customerService, IUserAccountService accountService, ICustomerOrderService customerOrderService,
-            IOrderFormHistoryRepository typeFormOrdersLogRepository, ISupplierCaseLimitsService supplierCaseLimitsService,
-            ISupplierCustomerNumberRepository suplierCustomerNumber)
+            IOrderFormHistoryRepository typeFormOrdersLogRepository)
         {
             _translationRepository = translationRepository ?? throw new ArgumentNullException(nameof(translationRepository));
             _supplierService = supplierService ?? throw new ArgumentNullException(nameof(supplierService));
@@ -39,8 +36,6 @@
             _accountService = accountService ?? throw new ArgumentNullException(nameof(accountService));
             _customerOrderService = customerOrderService ?? throw new ArgumentNullException(nameof(customerOrderService));
             _typeFormOrdersLogRepository = typeFormOrdersLogRepository ?? throw new ArgumentNullException(nameof(typeFormOrdersLogRepository));
-            _supplierCaseLimitsService = supplierCaseLimitsService ?? throw new ArgumentNullException(nameof(supplierCaseLimitsService));
-            _supplierCustomerNumber = suplierCustomerNumber ?? throw new ArgumentNullException(nameof(suplierCustomerNumber));
         }
 
         /// <inheritdoc />
@@ -124,7 +119,6 @@
                 var orderLines = GetOrderRowsLine(orderDto, order.ForSupplierId, order.FromCustomerId, out cardCount, user)[0];
                 html = ConvertLineToHtml(orderLines, user.LanguageCode);
             }
-
 
             return html;
         }
@@ -243,44 +237,11 @@
         public int AllowedItemsInOrder(int supplierId, out int sentItemInOrder, int companyId)
         {
             int noOfItems = 0;
-            int sentItems = 0;
+            sentItemInOrder = 0;
 
-            var allLimitData = _supplierCaseLimitsService.GetAllSupplierLimitations();
-            if (allLimitData.Count > 0)
-            {
-                if (allLimitData.Any(d => d.SupplierId == supplierId))
-                {
-                    var customer = _customerService.Find(companyId);
-                    customer.PaymentMethod = customer.PaymentMethod != null ? customer.PaymentMethod.ToLower() : null;
-                    customer.InternalCreditRating = customer.InternalCreditRating != null ? customer.InternalCreditRating.ToLower() : null;
+            // Here removed whole logic regarding reading suppliers limitations according to ordered items
+            // this logic was quite complicated an anyway shouldn't be present in this class
 
-                    if (customer != null)
-                    {
-                        customer.PaymentMethod = customer.PaymentMethod != null ? customer.PaymentMethod.ToUpper() : null;
-                        customer.InternalCreditRating = customer.InternalCreditRating != null ? customer.InternalCreditRating.ToUpper() : null;
-                        foreach (var limit in allLimitData.Where(d => d.SupplierId == supplierId))
-                        {
-                            limit.CreditRating = limit.CreditRating != null ? limit.CreditRating.ToUpper() : null;
-                            limit.PaymentMethod = limit.PaymentMethod != null ? limit.PaymentMethod.ToUpper() : null;
-                            if (limit.CreditRating == customer.InternalCreditRating && limit.PaymentMethod == customer.PaymentMethod)
-                            {
-                                noOfItems = limit.MaxCaseLimit ?? 0;
-                                //  break;
-                            }
-                            else if (limit.CreditRating == customer.InternalCreditRating)
-                            {
-                                noOfItems = limit.MaxCaseLimit ?? 0;
-                                // break;
-                            }
-                        }
-
-                    }
-                    List<int> supplierIds = allLimitData.Select(d => d.SupplierId).Distinct().ToList();
-                    int supplierCustomerNumberCount = _supplierCustomerNumber.MemberSupplierCustomerNumbersCountBySupplierIds(supplierIds, companyId);
-                    sentItems = supplierCustomerNumberCount + _customerOrderService.GetOrderItemSumForCustomer(supplierIds, companyId);
-                }
-            }
-            sentItemInOrder = sentItems;
             return noOfItems;
         }
 

@@ -11,7 +11,6 @@
         DbSet<Supplier> Suppliers { get; }
         DbSet<Department> Departments { get; }
         DbSet<SupplierOrderPolicy> SupplierOrderPolicies { get; }
-        DbSet<SupplierCaseLimits> SupplierCaseLimits { get; }
         DbSet<AspNetRole> AspNetRoles { get; }
         DbSet<AspNetUser> AspNetUsers { get; }
         DbSet<MailMessage> MailMessages { get; }

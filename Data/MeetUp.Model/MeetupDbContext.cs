@@ -53,8 +53,6 @@
 
         public virtual DbSet<SupplierOrderPolicy> SupplierOrderPolicies { get; set; }
 
-        public virtual DbSet<SupplierCaseLimits> SupplierCaseLimits { get; set; }
-
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
 
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
