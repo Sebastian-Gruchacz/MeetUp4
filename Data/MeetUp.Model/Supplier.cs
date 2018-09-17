@@ -21,19 +21,21 @@
         [Index("UIX_SupplierName", 1, IsUnique = true)]
         public string Name { get; set; }
 
-        
+
 
         /// <summary>
-        /// This is internal address that handles special case orders for this supplier. 
+        /// This is internal address that handles special case orders for this supplier.
         /// </summary>
         /// <remarks>If NULL - default support address shall be used. Yet this is not properly implemented in example code. Exercise fixing it!</remarks>
         [StringLength(250)]
         [Index("UIX_InternaEmail", 1, IsUnique = true)]
-        public string InternalSupportEmailForSpecialSituations { get; set; } 
+        public string InternalSupportEmailForSpecialSituations { get; set; }
 
 
 
 
         public virtual ICollection<SupplierOrderPolicy> SupplierOrderPolicies { get; set; }
+
+        public virtual ICollection<SupplierCaseField> SupplierCaseFields { get; set; }
     }
 }

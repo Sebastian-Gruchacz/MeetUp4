@@ -6,19 +6,19 @@
 
     using NLog;
 
-    public partial class MeetupDbContext : DbContext
+    public partial class MeetUpDbContext : DbContext, IFullDataContext
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Do not directly use this constructor - it's for migrations only
         /// </summary>
-        public MeetupDbContext() : base("name=MigrationDbContext")
+        public MeetUpDbContext() : base("name=MigrationDbContext")
         {
             Logger.Trace("Migration context created.");
         }
 
-        public MeetupDbContext(DbConnection connection) : base(connection, true)
+        public MeetUpDbContext(DbConnection connection) : base(connection, true)
         {
             // Could potentially debug some more info from connection, but OFC be careful to not expose security-critical data like password...
             Logger.Trace($"Regular context created for {connection.Database}");
@@ -59,13 +59,21 @@
 
         public virtual DbSet<MailMessage> MailMessages { get; set; }
 
-        public virtual DbSet<MailAttachment> MailMessageAttachmentss { get; set; }
+        public virtual DbSet<MailAttachment> MailMessageAttachments { get; set; }
 
         public virtual DbSet<UserCustomerRole> UserCustomerRoles { get; set; }
 
         public virtual DbSet<CustomerCase> CustomerCases { get; set; }
 
         public virtual DbSet<CustomerCaseStatusEntry> CustomerCaseHistoryLogs { get; set; }
+
+        public virtual DbSet<OrderFormHistory> OrderFormHistories { get; set; }
+
+        public virtual DbSet<SupplierCustomerNumber> SupplierCustomerNumbers { get; set; }
+
+        public virtual DbSet<CaseField> CaseFields { get; set; }
+
+        public virtual DbSet<SupplierCaseField> SupplierCaseFields { get; set; }
 
 
         // ... more entities come here ...

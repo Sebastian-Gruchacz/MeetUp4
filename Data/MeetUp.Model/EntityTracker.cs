@@ -46,5 +46,17 @@
                 ModifiedDateTimeUtc = modifiedDateTime ?? DateTime.UtcNow
             };
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="editorId"></param>
+        /// <param name="modifiedDateTime"></param>
+        /// <remarks>Should be even simpler to use.</remarks>
+        public void UpdateTracking(Guid editorId, DateTime? modifiedDateTime = null)
+        {
+            LastModifiedBy = editorId;
+            ModifiedDateTimeUtc = modifiedDateTime ?? DateTime.UtcNow;
+        }
     }
 }
