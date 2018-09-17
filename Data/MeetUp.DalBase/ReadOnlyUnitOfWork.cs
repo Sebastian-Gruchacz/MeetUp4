@@ -14,9 +14,9 @@
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly MeetUpDbContext _context;
+        private readonly IFullDataContext _context;
 
-        public ReadOnlyUnitOfWork(MeetUpDbContext context)
+        public ReadOnlyUnitOfWork(IFullDataContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
@@ -26,7 +26,7 @@
         /// </summary>
         public IDataContext Context => _context;
 
-        protected MeetUpDbContext InnerContext => _context;
+        protected IFullDataContext InnerContext => _context;
 
         public void Dispose()
         {

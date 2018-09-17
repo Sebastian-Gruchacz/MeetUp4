@@ -64,6 +64,7 @@
     <Compile Include="CustomerOrderAttachment.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="IDataContext.cs" />
+    <Compile Include="IFullDataContext.cs" />
     <Compile Include="ITrackeable.cs" />
     <Compile Include="MailAttachment.cs" />
     <Compile Include="MailMessage.cs" />

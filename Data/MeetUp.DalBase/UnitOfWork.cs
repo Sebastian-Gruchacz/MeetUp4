@@ -6,20 +6,20 @@
 
     using NLog;
 
-    public sealed class UnitOfWork : ReadOnlyUnitOfWork, IUnitOfWork
+    public class UnitOfWork : ReadOnlyUnitOfWork, IUnitOfWork
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
         private bool _saveCalled;
         private bool _rollBackCalled;
 
-        public UnitOfWork(MeetUpDbContext context) : base(context)
+        public UnitOfWork(IFullDataContext context) : base(context)
         {
             // TODO: add transaction on InnerContext, pass transaction scope / level in the constructor
             // This would require proper strategies, maybe more methods in Factory for different optimization scenarios
         }
 
-        public void SaveChanges()
+        public virtual void SaveChanges()
         {
             if (_saveCalled || _rollBackCalled)
             {
@@ -30,7 +30,7 @@
             InnerContext.SaveChanges(); // TODO: add asynchronous operations as part of the exercise ;-)
         }
 
-        public void RollBack()
+        public virtual void RollBack()
         {
             if (_saveCalled || _rollBackCalled)
             {

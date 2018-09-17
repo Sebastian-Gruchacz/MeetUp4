@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="CustomerCaseService.cs" />
     <Compile Include="CustomerCaseServiceResponse.cs" />
-    <Compile Include="CustomerServiceLogic.cs" />
+    <Compile Include="CustomerCaseServiceLogic.cs" />
     <Compile Include="ICustomerCaseService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

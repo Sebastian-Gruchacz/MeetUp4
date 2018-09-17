@@ -11,7 +11,7 @@
 
     using NLog;
 
-    public static class CustomerServiceLogic
+    public static class CustomerCaseServiceLogic
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

@@ -6,7 +6,7 @@
 
     using NLog;
 
-    public partial class MeetUpDbContext : DbContext, IDataContext
+    public partial class MeetUpDbContext : DbContext, IFullDataContext
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
@@ -59,7 +59,7 @@
 
         public virtual DbSet<MailMessage> MailMessages { get; set; }
 
-        public virtual DbSet<MailAttachment> MailMessageAttachmentss { get; set; }
+        public virtual DbSet<MailAttachment> MailMessageAttachments { get; set; }
 
         public virtual DbSet<UserCustomerRole> UserCustomerRoles { get; set; }
 

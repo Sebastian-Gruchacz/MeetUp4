@@ -6,21 +6,14 @@
     using System.IO;
     using System.Linq;
     using System.Xml;
-
-    using EmailingService;
-
-    using FileStorageService;
-
-    using HtmlAgilityPack;
-
     using CustomerCaseService;
-
+    using EmailingService;
+    using FileStorageService;
+    using HtmlAgilityPack;
     using Mandrill;
-
     using MeetUp.Common;
     using MeetUp.Enumerations;
     using MeetUp.Model;
-
     using NLog;
 
     public class CustomerOrder : ICustomerOrder
@@ -51,7 +44,7 @@
             _mailMessageService = mailMessageService;
             _customerOrderService = customerOrderService;
             _mailAttachmentService = mailAttachmentService;
-            this._customerCaseService = customerCaseService;
+            _customerCaseService = customerCaseService;
             _formService = formService;
         }
 
@@ -118,7 +111,7 @@
                             }
                         }
 
-                        var response = this.SaveCaseStatus(customerOrder.ForSupplierId, customerOrder.FromCustomerId, customerOrder.FromDepartmentId, user.Id, supplierEmployeeLimitForOrder, customerOrder.Id);
+                        var response = SaveCaseStatus(customerOrder.ForSupplierId, customerOrder.FromCustomerId, customerOrder.FromDepartmentId, user.Id, supplierEmployeeLimitForOrder, customerOrder.Id);
                         if (response != null && response.IsSuccess)
                         {
                             var emailHtmlBody = "";
@@ -266,19 +259,21 @@
                 FromDepartmentId = departmentId,
                 FromUserId = userId,
                 OrderId = orderId,
-                Tracking = EntityTracker.StartTracking(this.ServiceId) // not directly by user, disputable 
+                Tracking = EntityTracker.StartTracking(ServiceId) // not directly by user, disputable 
             };
 
             CustomerCaseStatusEntry caseEntry = new CustomerCaseStatusEntry
             {
                 Status = (supplierEmployeeLimitForOrder) ? CaseStatus.PendingSupplier : CaseStatus.PendingInternal,
                 UserComments = (supplierEmployeeLimitForOrder) ? @"Waiting for Supplier response." : @"Waiting for Support response. Customer-Case has been sent to Support.",
-                Tracking = EntityTracker.StartTracking(this.ServiceId) // not directly by user, disputable 
+                Tracking = EntityTracker.StartTracking(ServiceId) // not directly by user, disputable 
             };
 
             @case.CaseHistory.Add(caseEntry);
 
-            return this._customerCaseService.SaveCustomerCase(@case);
+            //return CustomerCaseServiceLogic.SaveCustomerCase(work, @case);
+
+            return _customerCaseService.SaveCustomerCase(@case);
         }
 
         private Boolean SendEmail(AspNetUser user, string message, string DestinationEmail, string channelId, string SenderEmail, LanguageCode culture, string RecipientName, string SenderName, List<email_attachment> attachmentList)
@@ -363,7 +358,7 @@
                     ToAddress = user.Email,
                     UserId = user.Id,
                     HideFromUser = true,
-                    Tracking = EntityTracker.StartTracking(this.ServiceId) // not directly by user, disputable 
+                    Tracking = EntityTracker.StartTracking(ServiceId) // not directly by user, disputable 
                 };
 
                 _mailMessageService.SaveMailMessage(mail, slug, channelId, emailContents);
@@ -397,7 +392,7 @@
                 Kind = MessageKind.Sent,
                 HideFromUser = true,
                 Type = MessageType.Order,
-                Tracking = EntityTracker.StartTracking(this.ServiceId) // not directly by user, disputable 
+                Tracking = EntityTracker.StartTracking(ServiceId) // not directly by user, disputable 
             };
 
             return _mailMessageService.SaveMailMessage(mailMessage);
@@ -453,7 +448,7 @@
                     FileUrl = item.FileURL,
                     FilePath = item.FilePath,
                     MimeType = item.MimeType,
-                    Tracking = EntityTracker.StartTracking(this.ServiceId) // not directly by user, disputable 
+                    Tracking = EntityTracker.StartTracking(ServiceId) // not directly by user, disputable 
                 };
 
                 _mailAttachmentService.SaveAttachemnts(attachment);
@@ -461,7 +456,7 @@
             return true;
         }
 
-        
+
 
         #endregion
 

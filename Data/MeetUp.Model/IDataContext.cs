@@ -4,19 +4,19 @@
 
     public interface IDataContext
     {
-        DbSet<Customer_Order> CustomerOrders { get; set; }
-        DbSet<OrderLine> CustomerOrderLines { get; set; }
-        DbSet<CustomerOrderAttachment> CustomerOrderAttachments { get; set; }
-        DbSet<Customer> Customers { get; set; }
-        DbSet<Supplier> Suppliers { get; set; }
-        DbSet<Department> Departments { get; set; }
-        DbSet<SupplierOrderPolicy> SupplierOrderPolicies { get; set; }
-        DbSet<AspNetRole> AspNetRoles { get; set; }
-        DbSet<AspNetUser> AspNetUsers { get; set; }
-        DbSet<MailMessage> MailMessages { get; set; }
-        DbSet<MailAttachment> MailMessageAttachmentss { get; set; }
-        DbSet<UserCustomerRole> UserCustomerRoles { get; set; }
-        DbSet<CustomerCase> CustomerCases { get; set; }
-        DbSet<CustomerCaseStatusEntry> CustomerCaseHistoryLogs { get; set; }
+        DbSet<Customer_Order> CustomerOrders { get; }
+        DbSet<OrderLine> CustomerOrderLines { get; }
+        DbSet<CustomerOrderAttachment> CustomerOrderAttachments { get; }
+        DbSet<Customer> Customers { get; }
+        DbSet<Supplier> Suppliers { get; }
+        DbSet<Department> Departments { get; }
+        DbSet<SupplierOrderPolicy> SupplierOrderPolicies { get; }
+        DbSet<AspNetRole> AspNetRoles { get; }
+        DbSet<AspNetUser> AspNetUsers { get; }
+        DbSet<MailMessage> MailMessages { get; }
+        DbSet<MailAttachment> MailMessageAttachments { get; }
+        DbSet<UserCustomerRole> UserCustomerRoles { get; }
+        DbSet<CustomerCase> CustomerCases { get; }
+        DbSet<CustomerCaseStatusEntry> CustomerCaseHistoryLogs { get; }
     }
 }
