@@ -22,6 +22,8 @@
 
 
         public DbSet<Customer_Order> CustomerOrders => _context.CustomerOrders; //.Where(o => o.Permissions. ...);
+        // TODO: permissions can be also simplified here with Generic extension, then could be partially reusable perhaps for includes?
+        // THis still does not resolve Lazy Loading permissions, so perhaps should be forbidden when using this pattern.
 
         public DbSet<OrderLine> CustomerOrderLines => _context.CustomerOrderLines;
 
