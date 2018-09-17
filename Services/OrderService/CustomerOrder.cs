@@ -16,6 +16,8 @@
     using MeetUp.Model;
     using NLog;
 
+    using OrderFormService;
+
     public class CustomerOrder : ICustomerOrder
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

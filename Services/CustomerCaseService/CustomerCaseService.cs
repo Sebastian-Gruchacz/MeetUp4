@@ -1,36 +1,40 @@
 ﻿namespace CustomerCaseService
 {
     using System;
-    using System.Data.Entity;
     using System.Linq;
 
-    using MeetUp.Common;
-    using MeetUp.DalBase;
+    using MeetUp.DAL;
     using MeetUp.Enumerations;
     using MeetUp.Model;
 
     using NLog;
 
-    public static class CustomerCaseServiceLogic
+    public class CustomerCaseService : ICustomerCaseService
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static CustomerCaseServiceResponse SaveCustomerCase(IUnitOfWork work, CustomerCase customerCase)
+        private readonly ICustomerCaseRepository _customerCaseRepository;
+
+        public CustomerCaseService(ICustomerCaseRepository customerCaseRepository)
         {
-            Logger.Debug("BLL: SaveCustomerCase : customerId : " + customerCase?.FromCustomerId ?? "#NULL#");
+            this._customerCaseRepository = customerCaseRepository;
+        }
+
+        public CustomerCaseServiceResponse SaveCustomerCase(CustomerCase customerCase)
+        {
+            Logger.Debug("SaveCustomerCase : customerId : " + customerCase?.FromCustomerId ?? "#NULL#");
 
             if (customerCase != null) // TODO: throw ArgumentNulLException instead
             {
                 CustomerCase customerCaseModel = null;
 
                 if (customerCase.CaseId > 0)
-                {
-                    customerCaseModel = work.Context.CustomerCases.FirstOrDefault(i => i.CaseId == customerCase.CaseId);
-                }
+                    customerCaseModel = this._customerCaseRepository.All.FirstOrDefault(i => i.CaseId == customerCase.CaseId);
 
                 if (customerCaseModel != null)
                 {
-                    customerCaseModel.Tracking.UpdateTracking(SystemUsers.CustomerCaseService);
+
+                    customerCaseModel.Tracking.ModifiedDateTimeUtc = DateTime.UtcNow; // TODO: TASK: update tracking object with user id
 
                     if (customerCase.FromUserId != Guid.Empty)
                         customerCaseModel.FromUserId = customerCase.FromUserId;
@@ -44,9 +48,8 @@
                     if (customerCase.FromDepartmentId > 0)
                         customerCaseModel.FromDepartmentId = customerCase.FromDepartmentId;
 
-                    work.Context.CustomerCases.Update(customerCaseModel);
-
-                    // no SaveChanges! service do not own UOF object!
+                    this._customerCaseRepository.Update(customerCaseModel);
+                    this._customerCaseRepository.SaveChanges();
 
                     return new CustomerCaseServiceResponse
                     {
@@ -57,7 +60,8 @@
                 }
                 else
                 {
-                    customerCase.Tracking = EntityTracker.StartTracking(SystemUsers.CustomerCaseService);
+                    customerCase.Tracking.CreatedDateTimeUtc = DateTime.UtcNow;  // ??? this one is bad
+                    customerCase.Tracking.ModifiedDateTimeUtc = DateTime.UtcNow; // TODO: TASK: update tracking object with user id
 
                     if (customerCase.CaseHistory != null && customerCase.CaseHistory.Count > 0)
                     {
@@ -73,12 +77,11 @@
 
                     // TODO: this code is again quite bad and doing some magic with entities
 
-                    var newCase = work.Context.CustomerCases.FirstOrDefault(d => d.OrderId == customerCase.OrderId && customerCase.OrderId != null);
+                    var newCase = this._customerCaseRepository.All.FirstOrDefault(d => d.OrderId == customerCase.OrderId && customerCase.OrderId != null);
                     if (newCase == null)
                     {
-                        work.Context.CustomerCases.Add(customerCase); // Insert()?
-
-                        // no SaveChanges! service do not own UOF object!
+                        this._customerCaseRepository.Insert(customerCase);
+                        this._customerCaseRepository.SaveChanges();
                     }
                     else
                     {
