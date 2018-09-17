@@ -53,6 +53,8 @@
 
         public virtual DbSet<SupplierOrderPolicy> SupplierOrderPolicies { get; set; }
 
+        public virtual DbSet<SupplierCaseLimits> SupplierCaseLimits { get; set; }
+
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
 
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
@@ -66,6 +68,14 @@
         public virtual DbSet<CustomerCase> CustomerCases { get; set; }
 
         public virtual DbSet<CustomerCaseStatusEntry> CustomerCaseHistoryLogs { get; set; }
+
+        public virtual DbSet<OrderFormHistory> OrderFormHistories { get; set; }
+
+        public virtual DbSet<SupplierCustomerNumber> SupplierCustomerNumbers { get; set; }
+
+        public virtual DbSet<CaseField> CaseFields { get; set; }
+
+        public virtual DbSet<SupplierCaseField> SupplierCaseFields { get; set; }
 
 
         // ... more entities come here ...

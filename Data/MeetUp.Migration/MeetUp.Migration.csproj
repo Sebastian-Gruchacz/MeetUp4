@@ -65,6 +65,10 @@
     <Compile Include="Migrations\201809081507360_TrackingRedesign.Designer.cs">
       <DependentUpon>201809081507360_TrackingRedesign.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809172303048_Resolve wider model required for order HTML.cs" />
+    <Compile Include="Migrations\201809172303048_Resolve wider model required for order HTML.Designer.cs">
+      <DependentUpon>201809172303048_Resolve wider model required for order HTML.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -101,6 +105,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809081507360_TrackingRedesign.resx">
       <DependentUpon>201809081507360_TrackingRedesign.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809172303048_Resolve wider model required for order HTML.resx">
+      <DependentUpon>201809172303048_Resolve wider model required for order HTML.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

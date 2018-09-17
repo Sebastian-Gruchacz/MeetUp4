@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{32FFF58E-3660-409C-99C8-D40EE69ED61D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MeetUp.Common</RootNamespace>
-    <AssemblyName>MeetUp.Common</AssemblyName>
+    <ProjectGuid>{3CF88E93-38D6-4B59-867C-1513803E9C8C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>CustomerBonusService</RootNamespace>
+    <AssemblyName>CustomerBonusService</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,19 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AmountFormat.cs" />
-    <Compile Include="CollectionExtensions.cs" />
-    <Compile Include="IRepository.cs" />
+    <Compile Include="CustomerSavingCalculationDetailDto.cs" />
+    <Compile Include="CustomerSavingCalculationDto.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceResponse.cs" />
-    <Compile Include="SystemUsers.cs" />
-    <Compile Include="UnixFormatDateExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\MeetUp.Enumerations\MeetUp.Enumerations.csproj">
-      <Project>{D5600334-8BBE-4D27-A0D3-F63914A04CE4}</Project>
-      <Name>MeetUp.Enumerations</Name>
-    </ProjectReference>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

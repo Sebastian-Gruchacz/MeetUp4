@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerCaseService", "Serv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderFormService", "Services\OrderFormService\OrderFormService.csproj", "{72EA1AC4-B6C3-4DB2-BD94-E3C5E903D823}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerBonusService", "Services\CustomerBonusService\CustomerBonusService.csproj", "{3CF88E93-38D6-4B59-867C-1513803E9C8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{72EA1AC4-B6C3-4DB2-BD94-E3C5E903D823}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72EA1AC4-B6C3-4DB2-BD94-E3C5E903D823}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72EA1AC4-B6C3-4DB2-BD94-E3C5E903D823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CF88E93-38D6-4B59-867C-1513803E9C8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CF88E93-38D6-4B59-867C-1513803E9C8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CF88E93-38D6-4B59-867C-1513803E9C8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CF88E93-38D6-4B59-867C-1513803E9C8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +131,7 @@ Global
 		{832B17B2-D95B-4C90-B281-707B9079104C} = {BE1AED86-E897-409B-A302-79D62776B324}
 		{E01278FC-70A6-4C0E-A613-94FBCA2465B4} = {BE1AED86-E897-409B-A302-79D62776B324}
 		{72EA1AC4-B6C3-4DB2-BD94-E3C5E903D823} = {BE1AED86-E897-409B-A302-79D62776B324}
+		{3CF88E93-38D6-4B59-867C-1513803E9C8C} = {BE1AED86-E897-409B-A302-79D62776B324}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {331596ED-C3D0-416E-A6BC-D4C49A55C476}

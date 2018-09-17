@@ -11,6 +11,7 @@
         DbSet<Supplier> Suppliers { get; }
         DbSet<Department> Departments { get; }
         DbSet<SupplierOrderPolicy> SupplierOrderPolicies { get; }
+        DbSet<SupplierCaseLimits> SupplierCaseLimits { get; }
         DbSet<AspNetRole> AspNetRoles { get; }
         DbSet<AspNetUser> AspNetUsers { get; }
         DbSet<MailMessage> MailMessages { get; }
@@ -18,5 +19,9 @@
         DbSet<UserCustomerRole> UserCustomerRoles { get; }
         DbSet<CustomerCase> CustomerCases { get; }
         DbSet<CustomerCaseStatusEntry> CustomerCaseHistoryLogs { get; }
+        DbSet<OrderFormHistory> OrderFormHistories { get; }
+        DbSet<SupplierCustomerNumber> SupplierCustomerNumbers { get; }
+        DbSet<CaseField> CaseFields { get; }
+        DbSet<SupplierCaseField> SupplierCaseFields { get; }
     }
 }

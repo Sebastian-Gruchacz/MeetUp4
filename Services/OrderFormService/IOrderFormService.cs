@@ -6,7 +6,7 @@
 
     public interface IOrderFormService
     {
-        ServiceResponse ConvertToHTML(string customerOrderXml, int trackingId, Guid orderId);
+        ServiceResponse ConvertToHTML(string customerOrderXml, int caseId, Guid orderId);
 
         string GetOrderQuestionsHtml(Guid customerOrderId);
     }

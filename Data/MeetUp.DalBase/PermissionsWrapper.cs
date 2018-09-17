@@ -23,7 +23,7 @@
 
         public DbSet<Customer_Order> CustomerOrders => _context.CustomerOrders; //.Where(o => o.Permissions. ...);
         // TODO: permissions can be also simplified here with Generic extension, then could be partially reusable perhaps for includes?
-        // THis still does not resolve Lazy Loading permissions, so perhaps should be forbidden when using this pattern.
+        // This still does not resolve Lazy Loading permissions, so perhaps should be forbidden when using this pattern.
 
         public DbSet<OrderLine> CustomerOrderLines => _context.CustomerOrderLines;
 
@@ -36,6 +36,8 @@
         public DbSet<Department> Departments => _context.Departments;
 
         public DbSet<SupplierOrderPolicy> SupplierOrderPolicies => _context.SupplierOrderPolicies;
+
+        public DbSet<SupplierCaseLimits> SupplierCaseLimits => _context.SupplierCaseLimits;
 
         public DbSet<AspNetRole> AspNetRoles => _context.AspNetRoles;
 
@@ -51,6 +53,14 @@
 
         public DbSet<CustomerCaseStatusEntry> CustomerCaseHistoryLogs => _context.CustomerCaseHistoryLogs;
 
+        public DbSet<OrderFormHistory> OrderFormHistories => _context.OrderFormHistories;
+
+        public DbSet<SupplierCustomerNumber> SupplierCustomerNumbers => _context.SupplierCustomerNumbers;
+
+        public DbSet<CaseField> CaseFields => _context.CaseFields;
+
+        public DbSet<SupplierCaseField> SupplierCaseFields => _context.SupplierCaseFields;
+
         public void Dispose()
         {
             _context.Dispose();
@@ -60,6 +70,7 @@
         {
             // There is another location where we could create / modify Tracking records instead of in UnitOfWork object
             // Then we could not expose ChangeTracker in IFullDataContext... tempting...
+            // TODO: left as an exercise ;-)
             return _context.SaveChanges();
         }
 

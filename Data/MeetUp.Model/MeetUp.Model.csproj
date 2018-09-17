@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="AspNetRole.cs" />
     <Compile Include="AspNetUser.cs" />
+    <Compile Include="CaseField.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="CustomerCase.cs" />
     <Compile Include="CustomerCaseStatusEntry.cs" />
@@ -70,9 +71,13 @@
     <Compile Include="MailMessage.cs" />
     <Compile Include="MeetUpDbContext.cs" />
     <Compile Include="Customer_Order.cs" />
+    <Compile Include="OrderFormHistory.cs" />
     <Compile Include="OrderLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Supplier.cs" />
+    <Compile Include="SupplierCaseField.cs" />
+    <Compile Include="SupplierCaseLimits.cs" />
+    <Compile Include="SupplierCustomerNumber.cs" />
     <Compile Include="SupplierOrderPolicy.cs" />
     <Compile Include="EntityTracker.cs" />
     <Compile Include="UserCustomerRole.cs" />

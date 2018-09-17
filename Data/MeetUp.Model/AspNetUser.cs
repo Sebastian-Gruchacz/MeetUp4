@@ -6,8 +6,6 @@
 
     using Enumerations;
 
-    using MeetUp.Common;
-
     /// <summary>
     /// 
     /// </summary>
@@ -57,8 +55,9 @@
         [Index("UIX_InternaEmail", 1, IsUnique = true)]
         public string InternalEmail { get; set; }
 
+        [StringLength(50)]
+        public string PhoneNumber { get; set; }
 
-        // This is a bit hardcore to achieve... Skipping for now
 
         /// <inheritdoc />
         public EntityTracker Tracking { get; set; }
