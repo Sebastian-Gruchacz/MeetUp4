@@ -51,13 +51,14 @@
         private void CheckForUnfinishedWork()
         {
             // throw or log only? Probably better not throw from Dispose, but log only
+            // on the other hand - it should be wrapped in IDisposable -> using, so better both.
 
             bool hasChanges = InnerContext.ChangeTracker.HasChanges();
             if (hasChanges && !(_saveCalled || _rollBackCalled))
             {
-                Logger.Error("Some work has been added to UnitOfWork after it has been completed."); // .WithStackTrace()
-
-                // throw new InvalidOperationException();
+                var msg = "Some work has been added to UnitOfWork after it has been completed.";
+                Logger.Error(msg); // .WithStackTrace()
+                throw new InvalidOperationException(msg);
             }
         }
     }
